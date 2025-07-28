@@ -1,0 +1,46 @@
+/* 全局样式 */
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: #f0f8ff;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+/* 重置样式 */
+* {
+  box-sizing: border-box;
+}
+
+/* 移动端优先的响应式设计 */
+html, body, #root {
+  height: 100%;
+  width: 100%;
+}
+
+/* 修复Ant Design组件在移动端的一些样式问题 */
+.ant-input, .ant-input-password {
+  border-radius: 4px;
+}
+
+.ant-btn {
+  border-radius: 4px;
+}
+
+/* 移动端输入框高度调整 */
+.ant-input-lg, .ant-input-affix-wrapper-lg {
+  padding: 12px;
+  font-size: 16px;
+}
+
+/* 修复移动端点击延迟 */
+a, button, input, select, textarea, div[role="button"] {
+  touch-action: manipulation;
+}

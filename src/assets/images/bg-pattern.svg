@@ -1,0 +1,15 @@
+<svg width="1440" height="900" viewBox="0 0 1440 900" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#e6f7ff" />
+      <stop offset="100%" stop-color="#f0f5ff" />
+    </linearGradient>
+    <pattern id="pattern" x="0" y="0" width="40" height="40" patternUnits="userSpaceOnUse">
+      <circle cx="20" cy="20" r="2" fill="#1890ff" opacity="0.2" />
+    </pattern>
+  </defs>
+  <rect width="100%" height="100%" fill="url(#gradient)" />
+  <rect width="100%" height="100%" fill="url(#pattern)" />
+  <path d="M0,900 C300,800 700,850 1440,750 L1440,900 L0,900 Z" fill="#1890ff" opacity="0.05" />
+  <path d="M0,900 C400,850 800,800 1440,850 L1440,900 L0,900 Z" fill="#1890ff" opacity="0.1" />
+</svg>

@@ -1,0 +1,8 @@
+<svg width="32" height="32" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+  <!-- 蓝色R形状 -->
+  <rect x="2" y="2" width="28" height="28" rx="5" fill="#2468F2" />
+  <path d="M10 10 L20 10 Q25 10 25 15 L25 15 Q25 20 20 20 L15 20 L25 28 L20 28 L10 20 L10 28 L5 28 L5 10 L10 10 Z" fill="white" />
+  
+  <!-- 黄色方块 -->
+  <rect x="2" y="20" width="10" height="10" rx="2" fill="#FFCD29" />
+</svg>

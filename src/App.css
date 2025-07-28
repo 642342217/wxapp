@@ -1,0 +1,38 @@
+/* 应用主样式 */
+.app-container {
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* 移动端优先的响应式设计 */
+@media screen and (min-width: 768px) {
+  .app-container {
+    background-color: var(--background-color);
+  }
+  
+  .content-wrapper {
+    max-width: 414px; /* 移动设备标准宽度 */
+    width: 100%;
+    min-height: 100vh;
+    margin: 0 auto;
+    background-color: #fff;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+  }
+}
+
+/* 主题色定义 */
+:root {
+  --primary-color: #2468F2;
+  --success-color: #52c41a;
+  --warning-color: #faad14;
+  --error-color: #f5222d;
+  --heading-color: #262626;
+  --text-color: #595959;
+  --text-color-secondary: #8c8c8c;
+  --disabled-color: #bfbfbf;
+  --border-color: #d9d9d9;
+  --box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  --background-color: #f0f8ff;
+}
