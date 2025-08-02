@@ -7,6 +7,7 @@ import zhCN from 'antd/lib/locale/zh_CN';
 import MainLayout from './layouts/MainLayout';
 import LoginPage from './pages/login';
 import Dashboard from './pages/dashboard';
+import Profile from './pages/profile';
 
 // 导入全局样式
 import './styles/global.css';
@@ -17,12 +18,12 @@ function App() {
     <ConfigProvider locale={zhCN}>
       <Router>
         <Routes>
-          {/* 登录页面 */}
-          <Route path="/login" element={<LoginPage />} />
-          
           {/* 主布局下的路由 */}
           <Route element={<MainLayout />}>
+            {/* 登录页面 */}
+            <Route path="/login" element={<LoginPage />} />
             <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/profile" element={<Profile />} />
             {/* 可以添加更多路由 */}
           </Route>
           

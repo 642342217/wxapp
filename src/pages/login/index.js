@@ -31,7 +31,6 @@ const LoginPage = () => {
 
   const toggleLoginType = () => {
     setLoginType(loginType === 'password' ? 'sms' : 'password');
-    form.resetFields();
   };
 
   return (
@@ -54,15 +53,16 @@ const LoginPage = () => {
         <PhoneLabel>手机号码</PhoneLabel>
         <Form.Item
           name="phone"
-          rules={[
-            { required: true, message: '请输入手机号码' },
-            { pattern: /^1[3-9]\d{9}$/, message: '请输入正确的手机号码' }
-          ]}
+          // rules={[
+          //   { required: true, message: '请输入手机号码' },
+          //   { pattern: /^1[3-9]\d{9}$/, message: '请输入正确的手机号码' }
+          // ]}
         >
           <PhoneInput 
+
             prefix={<PhonePrefix>+86</PhonePrefix>}
             placeholder="请输入登录手机号码"
-            suffix={<MobileOutlined style={{ color: '#bfbfbf' }} />}
+            suffix={loginType === 'sms' && <VerifyCodeButton>获取验证码</VerifyCodeButton>}
           />
         </Form.Item>
         
@@ -71,11 +71,12 @@ const LoginPage = () => {
             <PasswordLabel>密码</PasswordLabel>
             <Form.Item
               name="password"
-              rules={[{ required: true, message: '请输入密码' }]}
+              // rules={[{ required: true, message: '请输入密码' }]}
             >
               <PasswordInput 
                 placeholder="请输入密码"
-                iconRender={(visible) => (visible ? <KeyOutlined /> : <KeyOutlined />)}
+                iconRender={() => null}
+                // iconRender={(visible) => (visible ? <KeyOutlined /> : <KeyOutlined />)}
               />
             </Form.Item>
           </>
@@ -88,19 +89,16 @@ const LoginPage = () => {
             >
               <SmsCodeInput 
                 placeholder="请输入短信验证码"
-                suffix={<VerifyCodeButton>获取验证码</VerifyCodeButton>}
+                // suffix={<VerifyCodeButton>获取验证码</VerifyCodeButton>}
               />
             </Form.Item>
           </>
         )}
         
-        <Form.Item>
+        <ButtonsWrapper>
           <LoginButton type="primary" htmlType="submit" loading={loading}>
             安全登录
           </LoginButton>
-        </Form.Item>
-        
-        <ButtonsWrapper>
           <SmsLoginLink onClick={toggleLoginType}>
             {loginType === 'password' ? '短信验证码登录' : '手机号/密码登录'}
           </SmsLoginLink>
@@ -124,7 +122,6 @@ const LoginContainer = styled.div`
   display: flex;
   flex-direction: column;
   min-height: 100vh;
-  background-color: #f0f8ff; /* 浅蓝色背景 */
 `;
 
 const LogoWrapper = styled.div`
@@ -145,7 +142,7 @@ const WelcomeText = styled.h1`
 const LoginTag = styled.div`
   display: inline-block;
   width: fit-content;
-  background: linear-gradient(90deg,rgb(247, 213, 120) 0%,rgb(143, 178, 247) 70%, #FFFFFF 100%);
+  background: linear-gradient(90deg,rgb(247, 213, 120) 0%,rgb(143, 178, 247) 70%,rgb(242, 239, 239) 100%);
   color: #000;
   padding: 4px 16px;
   border-radius: 10px;
@@ -157,6 +154,7 @@ const LoginTag = styled.div`
 
 const LoginForm = styled(Form)`
   width: 100%;
+  background-color: transparent !important;
 `;
 
 const PhoneLabel = styled.div`
@@ -170,23 +168,27 @@ const PhoneLabel = styled.div`
 `;
 
 const PasswordLabel = styled.div`
-  font-size: 14px;
+  font-size: 10px;
   color: #888;
   margin-bottom: 8px;
-  margin-top: 20px;
+  padding: 2px 4px;
+  width: fit-content;
+  border-radius: 4px;
+  background-color:rgb(230, 229, 229);
 `;
 
 const PhoneInput = styled(Input)`
   height: 50px;
   border: none;
-  border-bottom: 1px solid #d9d9d9;
+  border-bottom: 1px solid rgb(62, 61, 61);
   border-radius: 0;
   padding-left: 0;
-  background-color: transparent;
+  background-color: transparent !important;
   box-shadow: none !important;
-  
+
   &:focus, &:hover {
-    border-bottom: 1px solid #2468F2;
+    background-color: transparent;
+    border-bottom: 1px solid rgb(62, 61, 61);
   }
   
   .ant-input {
@@ -214,13 +216,15 @@ const PhonePrefix = styled.div`
 const PasswordInput = styled(Input.Password)`
   height: 50px;
   border: none;
-  border-bottom: 1px solid #d9d9d9;
+  border-bottom: 1px solid rgb(62, 61, 61);
   border-radius: 0;
   padding-left: 0;
+  background-color: transparent !important;
   box-shadow: none !important;
   
   &:focus, &:hover {
-    border-bottom: 1px solid #2468F2;
+    background-color: transparent;
+    border-bottom: 1px solid rgb(62, 61, 61);
   }
   
   .ant-input {
@@ -235,11 +239,10 @@ const PasswordInput = styled(Input.Password)`
 `;
 
 const LoginButton = styled(Button)`
-  width: 100%;
   height: 50px;
-  border-radius: 25px;
+  padding: 10 30px;
+  border-radius: 10px;
   font-size: 16px;
-  margin-top: 40px;
   background-color: #2468F2;
   font-weight: 500;
   box-shadow: 0 4px 10px rgba(36, 104, 242, 0.3);
@@ -251,20 +254,23 @@ const LoginButton = styled(Button)`
 
 const ButtonsWrapper = styled.div`
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
+  align-items: center;
   margin-top: 15px;
 `;
 
 const SmsCodeInput = styled(Input)`
   height: 50px;
   border: none;
-  border-bottom: 1px solid #d9d9d9;
+  border-bottom: 1px solid rgb(62, 61, 61);
   border-radius: 0;
   padding-left: 0;
+  background-color: transparent;
   box-shadow: none !important;
   
   &:focus, &:hover {
-    border-bottom: 1px solid #2468F2;
+    background-color: transparent;
+    border-bottom: 1px solid rgb(62, 61, 61);
   }
   
   .ant-input {
@@ -287,23 +293,20 @@ const VerifyCodeButton = styled.div`
 
 const SmsLoginLink = styled.div`
   text-align: center;
-  color: #2468F2;
+  color:rgb(49, 49, 49);
   cursor: pointer;
   font-size: 14px;
-  
-  &:hover {
-    color: #1854d8;
-  }
+  text-decoration: underline;
 `;
 
 const Disclaimer = styled.div`
   margin-top: auto;
   padding: 20px;
   font-size: 14px;
-  color: #666;
+  color: #000;
   line-height: 1.5;
   margin-bottom: 20px;
-  text-align: center;
+  text-align: start;
   background-color: rgba(240, 248, 255, 0.7);
   border-radius: 8px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
@@ -312,7 +315,7 @@ const Disclaimer = styled.div`
 const HighlightText = styled.div`
   color: #2468F2;
   margin-top: 5px;
-  font-weight: 500;
+  font-weight: 600;
 `;
 
 export default LoginPage;
