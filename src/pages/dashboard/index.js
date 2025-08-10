@@ -1,6 +1,6 @@
 import React from 'react';
 import { Button, Card, Typography, Space, Row, Col, Badge } from 'antd';
-import { UserOutlined, CalendarOutlined, FileTextOutlined, SwapOutlined, LogoutOutlined } from '@ant-design/icons';
+import { UserOutlined, CalendarOutlined, FileTextOutlined, SwapOutlined, LogoutOutlined, LineChartOutlined, UnorderedListOutlined } from '@ant-design/icons';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import backImage from '../../assets/images/back.jpg'; // 路径根据你的文件结构调整
@@ -92,16 +92,16 @@ const Dashboard = () => {
           <Row gutter={[16, 16]}>
             <Col span={12}>
               <MenuCard>
-                <IconCircle style={{ backgroundColor: 'rgba(36, 104, 242, 0.1)' }}>
-                  <FileTextOutlined style={{ color: '#2468F2' }} />
+                <IconCircle>
+                  <LineChartOutlined />
                 </IconCircle>
                 <MenuText>建议书</MenuText>
               </MenuCard>
             </Col>
             <Col span={12}>
               <MenuCard>
-                <IconCircle style={{ backgroundColor: 'rgba(36, 104, 242, 0.1)' }}>
-                  <FileTextOutlined style={{ color: '#2468F2' }} />
+                <IconCircle>
+                  <UnorderedListOutlined />
                 </IconCircle>
                 <MenuText>保单管理</MenuText>
               </MenuCard>
@@ -333,8 +333,8 @@ const IconCircle = styled.div`
   transition: all 0.3s ease;
   
   .anticon {
-    font-size: 22px;
-    color: white;
+    font-size: 22px !important;
+    color: white !important;
     transition: all 0.3s ease;
   }
   
@@ -343,7 +343,7 @@ const IconCircle = styled.div`
     transform: scale(1.1);
     
     .anticon {
-      color: white;
+      color: white !important;
     }
   }
 `;
