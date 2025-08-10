@@ -293,17 +293,19 @@ const UserName = styled.div`
 
 const MenuSection = styled.div`
   background: url(${backImage});
-  background-size: cover;
+  background-size: contain;
   background-position: center;
-  padding: 0 15px 25px;
+  background-repeat: no-repeat;
+  padding: 0 10px 25px;
   margin-bottom: 20px;
   position: relative;
+  min-height: 200px;
 `;
 
 const MenuCard = styled.div`
   background: transparent;
   height: 90px;
-  border-radius: 16px;
+  border-radius: 26px;
   display: flex;
   flex-direction: column;
   justify-content: center;
