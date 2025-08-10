@@ -99,7 +99,7 @@ const Dashboard = () => {
               </MenuCard>
             </Col>
             <Col span={12}>
-              <MenuCard>
+              <MenuCard onClick={() => navigate('/policies')}>
                 <IconCircle>
                   <UnorderedListOutlined />
                 </IconCircle>

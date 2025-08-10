@@ -8,7 +8,8 @@ import MainLayout from './layouts/MainLayout';
 import LoginPage from './pages/login';
 import Dashboard from './pages/dashboard';
 import Profile from './pages/profile';
-import Proposals from './pages/proposals'
+import ProposalsPage from './pages/proposals';
+import PoliciesPage from './pages/policies';
 
 // 导入全局样式
 import './styles/global.less';
@@ -25,7 +26,8 @@ function App() {
             <Route path="/login" element={<LoginPage />} />
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/profile" element={<Profile />} />
-            <Route path="/proposals" element={<Proposals />} />
+            <Route path="/proposals" element={<ProposalsPage />} />
+            <Route path="/policies" element={<PoliciesPage />} />
             {/* 可以添加更多路由 */}
           </Route>
           
