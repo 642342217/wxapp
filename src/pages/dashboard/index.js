@@ -18,6 +18,28 @@ const Dashboard = () => {
     weatherIcon: '☀️'
   };
 
+  // 模拟建议书数据
+  const proposalData = [
+    {
+      id: 'Valued Client',
+      title: '万通危疾加护保（优越版）— 25年期',
+      status: '已成功',
+      client: 'Valued Client'
+    },
+    {
+      id: 'Valued Client',
+      title: '环宇盈活储蓄保险计划-5年',
+      status: '已成功',
+      client: 'Valued Client'
+    },
+    {
+      id: 'Valued Client',
+      title: '「爱伴航」-25年',
+      status: '已成功',
+      client: 'Valued Client'
+    }
+  ];
+
   // 模拟保单数据
   const policyData = [
     {
@@ -68,7 +90,7 @@ const Dashboard = () => {
           </GreetingSection>
         </WelcomeCard>
           <Row gutter={[16, 16]}>
-            <Col span={6}>
+            <Col span={12}>
               <MenuCard>
                 <IconCircle style={{ backgroundColor: 'rgba(36, 104, 242, 0.1)' }}>
                   <FileTextOutlined style={{ color: '#2468F2' }} />
@@ -76,28 +98,12 @@ const Dashboard = () => {
                 <MenuText>建议书</MenuText>
               </MenuCard>
             </Col>
-            <Col span={6}>
-              <MenuCard>
-                <IconCircle style={{ backgroundColor: 'rgba(36, 104, 242, 0.1)' }}>
-                  <CalendarOutlined style={{ color: '#2468F2' }} />
-                </IconCircle>
-                <MenuText>预约管理</MenuText>
-              </MenuCard>
-            </Col>
-            <Col span={6}>
+            <Col span={12}>
               <MenuCard>
                 <IconCircle style={{ backgroundColor: 'rgba(36, 104, 242, 0.1)' }}>
                   <FileTextOutlined style={{ color: '#2468F2' }} />
                 </IconCircle>
                 <MenuText>保单管理</MenuText>
-              </MenuCard>
-            </Col>
-            <Col span={6}>
-              <MenuCard>
-                <IconCircle style={{ backgroundColor: 'rgba(36, 104, 242, 0.1)' }}>
-                  <SwapOutlined style={{ color: '#2468F2' }} />
-                </IconCircle>
-                <MenuText>产品对比</MenuText>
               </MenuCard>
             </Col>
           </Row>
@@ -113,6 +119,23 @@ const Dashboard = () => {
             <ActionText>新建议书</ActionText>
           </ActionButton>
         </ActionButtonsSection> */}
+
+        <ProposalSection>
+          <SectionHeader>
+            <SectionTitle>建议书</SectionTitle>
+            <ViewMoreLink>更多 &gt;</ViewMoreLink>
+          </SectionHeader>
+          
+          {proposalData.map((proposal, index) => (
+            <ProposalCard key={index}>
+              <ProposalHeader>
+                <ProposalClient>{proposal.client}</ProposalClient>
+                <ProposalStatus>{proposal.status}</ProposalStatus>
+              </ProposalHeader>
+              <ProposalTitle>{proposal.title}</ProposalTitle>
+            </ProposalCard>
+          ))}
+        </ProposalSection>
 
         <PolicySection>
           <SectionHeader>
@@ -191,95 +214,151 @@ const ContentArea = styled.div`
 
 const Header = styled.div`
   display: flex;
-  justify-content: flex-start;
+  justify-content: space-between;
   align-items: center;
-  padding: 15px;
-  background-color: white;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
+  padding: 20px 15px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  position: relative;
+  overflow: hidden;
+  
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+  }
 `;
 
 const LogoContainer = styled.div`
   display: flex;
   align-items: center;
+  position: relative;
+  z-index: 1;
 `;
 
 const LogoImage = styled.img`
-  height: 40px;
-  margin-right: 10px;
+  height: 45px;
+  margin-right: 12px;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 `;
 
 const LogoText = styled.div`
-  font-size: 18px;
-  font-weight: bold;
-  color: #000;
+  font-size: 20px;
+  font-weight: 700;
+  color: white;
   line-height: 1.2;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 `;
 
 const LogoSubtext = styled.div`
-  font-size: 10px;
-  color: #666;
-  margin-left: 5px;
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.8);
+  margin-left: 8px;
   text-transform: uppercase;
+  letter-spacing: 1px;
+  font-weight: 500;
 `;
 
 const WelcomeCard = styled.div`
-  padding: 20px;
-  background-color: #2468F2;
+  padding: 25px 20px;
   color: white;
-  margin-bottom: 20px;
+  margin: 15px;
+  position: relative;
 `;
 
 const GreetingSection = styled.div`
   display: flex;
   flex-direction: column;
+  position: relative;
+  z-index: 1;
 `;
 
 const GreetingText = styled.div`
-  font-size: 16px;
-  margin-bottom: 5px;
+  font-size: 14px;
+  margin-bottom: 8px;
+  opacity: 0.9;
+  font-weight: 400;
 `;
 
 const UserName = styled.div`
-  font-size: 24px;
-  font-weight: 500;
+  font-size: 20px;
+  font-weight: 600;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 `;
 
 const MenuSection = styled.div`
-  width: '90%';
   background: url(${backImage});
   background-size: cover;
-  padding: 0 15px;
+  background-position: center;
+  padding: 0 15px 25px;
   margin-bottom: 20px;
+  position: relative;
 `;
 
 const MenuCard = styled.div`
-  background-color: white;
-  height: 80px;
-  border-radius: 8px;
+  background: transparent;
+  height: 90px;
+  border-radius: 16px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease;
+  position: relative;
+  z-index: 1;
+  
+  &:hover {
+    transform: translateY(-2px);
+  }
+  
+  &:active {
+    transform: translateY(0);
+  }
 `;
 
 const IconCircle = styled.div`
-  width: 40px;
-  height: 40px;
+  width: 48px;
+  height: 48px;
   border-radius: 50%;
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-bottom: 8px;
+  margin-bottom: 10px;
+  background: rgba(255, 255, 255, 0.3);
+  transition: all 0.3s ease;
   
   .anticon {
-    font-size: 20px;
+    font-size: 22px;
+    color: white;
+    transition: all 0.3s ease;
+  }
+  
+  ${MenuCard}:hover & {
+    background: rgba(255, 255, 255, 0.4);
+    transform: scale(1.1);
+    
+    .anticon {
+      color: white;
+    }
   }
 `;
 
 const MenuText = styled.div`
-  font-size: 12px;
-  color: #333;
+  font-size: 13px;
+  color: white;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+  
+  ${MenuCard}:hover & {
+    color: white;
+    font-weight: 600;
+  }
 `;
 
 const ActionButtonsSection = styled.div`
@@ -443,6 +522,43 @@ const PolicyDate = styled.div`
 
 const PolicyReferrer = styled.div``;
 
+const ProposalSection = styled.div`
+  padding: 0 15px;
+  margin-bottom: 20px;
+`;
+
+const ProposalCard = styled.div`
+  background-color: white;
+  border-radius: 8px;
+  padding: 15px;
+  margin-bottom: 15px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
+`;
+
+const ProposalHeader = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+`;
+
+const ProposalClient = styled.div`
+  font-size: 16px;
+  font-weight: 500;
+  color: #333;
+`;
+
+const ProposalStatus = styled.div`
+  font-size: 13px;
+  font-weight: 500;
+  color: #52c41a;
+`;
+
+const ProposalTitle = styled.div`
+  font-size: 14px;
+  color: #666;
+  line-height: 1.4;
+`;
 
 const BottomNavigation = styled.div`
   position: fixed;
