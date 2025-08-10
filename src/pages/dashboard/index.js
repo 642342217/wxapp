@@ -91,7 +91,7 @@ const Dashboard = () => {
         </WelcomeCard>
           <Row gutter={[16, 16]}>
             <Col span={12}>
-              <MenuCard>
+              <MenuCard onClick={() => navigate('/proposals')}>
                 <IconCircle>
                   <LineChartOutlined />
                 </IconCircle>
@@ -123,7 +123,7 @@ const Dashboard = () => {
         <ProposalSection>
           <SectionHeader>
             <SectionTitle>建议书</SectionTitle>
-            <ViewMoreLink>更多 &gt;</ViewMoreLink>
+            <ViewMoreLink onClick={() => navigate('/proposals')}>更多 &gt;</ViewMoreLink>
           </SectionHeader>
           
           {proposalData.map((proposal, index) => (
@@ -313,6 +313,7 @@ const MenuCard = styled.div`
   transition: all 0.3s ease;
   position: relative;
   z-index: 1;
+  cursor: pointer;
   
   &:hover {
     transform: translateY(-2px);
@@ -422,6 +423,7 @@ const ViewMoreLink = styled.a`
   color: #2468F2;
   font-weight: 500;
   text-decoration: none;
+  cursor: pointer;
 `;
 
 const PolicyCard = styled.div`
