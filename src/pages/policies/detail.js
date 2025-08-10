@@ -344,84 +344,8 @@ const PolicyDetailPage = () => {
 
       {/* 受保人 */}
       <SectionCard>
-        <SectionHeader>
-          <SectionTitle>受保人</SectionTitle>
-        </SectionHeader>
         <SectionContent>
-          <InfoGrid>
-            <InfoRow>
-              <InfoLabel>中文姓名</InfoLabel>
-              <InfoValue>袁泳琳</InfoValue>
-            </InfoRow>
-            <InfoRow>
-              <InfoLabel>英文姓名</InfoLabel>
-              <InfoValue></InfoValue>
-            </InfoRow>
-            <InfoRow>
-              <InfoLabel>性别</InfoLabel>
-              <InfoValue></InfoValue>
-            </InfoRow>
-            <InfoRow>
-              <InfoLabel>出生日期</InfoLabel>
-              <InfoValue></InfoValue>
-            </InfoRow>
-            <InfoRow>
-              <InfoLabel>国籍</InfoLabel>
-              <InfoValue></InfoValue>
-            </InfoRow>
-            <InfoRow>
-              <InfoLabel>身高</InfoLabel>
-              <InfoValue></InfoValue>
-            </InfoRow>
-            <InfoRow>
-              <InfoLabel>体重</InfoLabel>
-              <InfoValue></InfoValue>
-            </InfoRow>
-            <InfoRow>
-              <InfoLabel>身份证号</InfoLabel>
-              <InfoValue>Y441012391</InfoValue>
-            </InfoRow>
-            <InfoRow>
-              <InfoLabel>身份证签发地</InfoLabel>
-              <InfoValue></InfoValue>
-            </InfoRow>
-            <InfoRow>
-              <InfoLabel>出生日期</InfoLabel>
-              <InfoValue></InfoValue>
-            </InfoRow>
-            <InfoRow>
-              <InfoLabel>入境证件类型</InfoLabel>
-              <InfoValue></InfoValue>
-            </InfoRow>
-            <InfoRow>
-              <InfoLabel>入境证件号码</InfoLabel>
-              <InfoValue></InfoValue>
-            </InfoRow>
-            <InfoRow>
-              <InfoLabel>通讯语言</InfoLabel>
-              <InfoValue></InfoValue>
-            </InfoRow>
-            <InfoRow>
-              <InfoLabel>婚姻状况</InfoLabel>
-              <InfoValue></InfoValue>
-            </InfoRow>
-            <InfoRow>
-              <InfoLabel>教育程度</InfoLabel>
-              <InfoValue></InfoValue>
-            </InfoRow>
-            <InfoRow>
-              <InfoLabel>通讯地址</InfoLabel>
-              <InfoValue></InfoValue>
-            </InfoRow>
-            <InfoRow>
-              <InfoLabel>联系电话</InfoLabel>
-              <InfoValue></InfoValue>
-            </InfoRow>
-            <InfoRow>
-              <InfoLabel>Email</InfoLabel>
-              <InfoValue></InfoValue>
-            </InfoRow>
-          </InfoGrid>
+          <InsuredPersonText>受保人为本人</InsuredPersonText>
         </SectionContent>
       </SectionCard>
 
@@ -431,44 +355,49 @@ const PolicyDetailPage = () => {
           <SectionTitle>法定收益人/信托人</SectionTitle>
         </SectionHeader>
         <SectionContent>
-          <InfoGrid>
-            <InfoRow>
-              <InfoLabel>持有人是否法定受益人</InfoLabel>
-              <InfoValue></InfoValue>
-            </InfoRow>
-            <InfoRow>
-              <InfoLabel>公司名称</InfoLabel>
-              <InfoValue>东莞市正兴投资管理有限公司</InfoValue>
-            </InfoRow>
-            <InfoRow>
-              <InfoLabel>公司业务性质</InfoLabel>
-              <InfoValue>投资顾问</InfoValue>
-            </InfoRow>
-            <InfoRow>
-              <InfoLabel>公司地址</InfoLabel>
-              <InfoValue>广东省东莞市东城街道东纵大道2号</InfoValue>
-            </InfoRow>
-            <InfoRow>
-              <InfoLabel>职位及职责</InfoLabel>
-              <InfoValue></InfoValue>
-            </InfoRow>
-            <InfoRow>
-              <InfoLabel>收入</InfoLabel>
-              <InfoValue></InfoValue>
-            </InfoRow>
-            <InfoRow>
-              <InfoLabel>支出</InfoLabel>
-              <InfoValue></InfoValue>
-            </InfoRow>
-            <InfoRow>
-              <InfoLabel>流动资产</InfoLabel>
-              <InfoValue></InfoValue>
-            </InfoRow>
-            <InfoRow>
-              <InfoLabel>工作性质</InfoLabel>
-              <InfoValue></InfoValue>
-            </InfoRow>
-          </InfoGrid>
+          {/* 受益人1 */}
+          <BeneficiaryCard>
+            <BeneficiaryHeader>
+              <BeneficiaryTag>受益人</BeneficiaryTag>
+              <BeneficiaryName>曹馨月</BeneficiaryName>
+            </BeneficiaryHeader>
+            <BeneficiaryInfo>
+              <BeneficiaryRow>
+                <BeneficiaryLabel>性别</BeneficiaryLabel>
+                <BeneficiaryValue>女</BeneficiaryValue>
+              </BeneficiaryRow>
+              <BeneficiaryRow>
+                <BeneficiaryLabel>身份证号</BeneficiaryLabel>
+                <BeneficiaryValue>420105201610052825</BeneficiaryValue>
+              </BeneficiaryRow>
+              <BeneficiaryRow>
+                <BeneficiaryLabel>关系</BeneficiaryLabel>
+                <BeneficiaryLabel>受益占比</BeneficiaryLabel>
+              </BeneficiaryRow>
+            </BeneficiaryInfo>
+          </BeneficiaryCard>
+
+          {/* 受益人2 */}
+          <BeneficiaryCard>
+            <BeneficiaryHeader>
+              <BeneficiaryTag>受益人</BeneficiaryTag>
+              <BeneficiaryName>曹馨元</BeneficiaryName>
+            </BeneficiaryHeader>
+            <BeneficiaryInfo>
+              <BeneficiaryRow>
+                <BeneficiaryLabel>性别</BeneficiaryLabel>
+                <BeneficiaryValue>女</BeneficiaryValue>
+              </BeneficiaryRow>
+              <BeneficiaryRow>
+                <BeneficiaryLabel>身份证号</BeneficiaryLabel>
+                <BeneficiaryValue>420105201610052841</BeneficiaryValue>
+              </BeneficiaryRow>
+              <BeneficiaryRow>
+                <BeneficiaryLabel>关系</BeneficiaryLabel>
+                <BeneficiaryLabel>受益占比</BeneficiaryLabel>
+              </BeneficiaryRow>
+            </BeneficiaryInfo>
+          </BeneficiaryCard>
         </SectionContent>
       </SectionCard>
 
@@ -731,6 +660,75 @@ const BottomTip = styled.div`
   font-size: 14px;
   padding: 30px 0;
   margin-bottom: 20px;
+`;
+
+const InsuredPersonText = styled.div`
+  text-align: center;
+  font-size: 16px;
+  color: #333;
+  padding: 20px 0;
+`;
+
+const BeneficiaryCard = styled.div`
+  background-color: white;
+  border-radius: 8px;
+  padding: 15px;
+  margin-bottom: 15px;
+  border: 1px solid #f0f0f0;
+  
+  &:last-child {
+    margin-bottom: 0;
+  }
+`;
+
+const BeneficiaryHeader = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 15px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #f0f0f0;
+`;
+
+const BeneficiaryTag = styled.div`
+  background-color: #e6f7ff;
+  color: #1890ff;
+  padding: 4px 12px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 500;
+`;
+
+const BeneficiaryName = styled.div`
+  font-size: 16px;
+  font-weight: 600;
+  color: #333;
+`;
+
+const BeneficiaryInfo = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+`;
+
+const BeneficiaryRow = styled.div`
+  display: grid;
+  grid-template-columns: 80px 1fr;
+  gap: 10px;
+  align-items: center;
+`;
+
+const BeneficiaryLabel = styled.div`
+  font-size: 14px;
+  color: #666;
+  line-height: 1.4;
+  word-break: break-all;
+`;
+
+const BeneficiaryValue = styled.div`
+  font-size: 14px;
+  color: #333;
+  font-weight: 500;
 `;
 
 export default PolicyDetailPage;
