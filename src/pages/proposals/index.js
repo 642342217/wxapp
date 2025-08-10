@@ -98,6 +98,18 @@ const ProposalsPage = () => {
   return (
     <ProposalsContainer>
       <ContentArea>
+        {/* 顶部新建按钮 */}
+        <CreateButtonContainer>
+          <CreateButton 
+            type="primary" 
+            icon={<PlusOutlined />}
+            onClick={handleCreateNew}
+            size="large"
+          >
+            新建建议书
+          </CreateButton>
+        </CreateButtonContainer>
+
         {/* 建议书列表 */}
         <ProposalsList>
           {proposalData.map((proposal) => (
@@ -132,15 +144,7 @@ const ProposalsPage = () => {
         </ProposalsList>
       </ContentArea>
 
-      {/* 浮动新建按钮 */}
-      <FloatingButton 
-        type="primary" 
-        shape="circle"
-        size="large"
-        onClick={handleCreateNew}
-      >
-        新建
-      </FloatingButton>
+
 
       {/* 底部导航 */}
       <BottomNavigation>
@@ -178,11 +182,50 @@ const ProposalsContainer = styled.div`
 const ContentArea = styled.div`
   flex: 1;
   overflow-y: auto;
-  padding-bottom: 80px;
+  padding-top: 90px;
+  padding-bottom: 60px;
+`;
+
+const CreateButtonContainer = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  padding: 20px 15px 0;
+  background-color: #f5f5f5;
+  z-index: 1000;
+  // box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  
+  @media screen and (min-width: 768px) {
+    max-width: 414px;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+`;
+
+const CreateButton = styled(Button)`
+  width: 100%;
+  height: 50px;
+  border-radius: 25px;
+  font-size: 16px;
+  font-weight: 600;
+  background: linear-gradient(135deg, #2468F2 0%, #1890ff 100%);
+  border: none;
+  box-shadow: 0 4px 12px rgba(36, 104, 242, 0.3);
+  
+  &:hover {
+    background: linear-gradient(135deg, #1890ff 0%, #2468F2 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(36, 104, 242, 0.4);
+  }
+  
+  &:active {
+    transform: translateY(0);
+  }
 `;
 
 const ProposalsList = styled.div`
-  padding: 20px 15px;
+  padding: 0 15px 20px;
 `;
 
 const ProposalCard = styled.div`
@@ -275,34 +318,7 @@ const DateText = styled.div`
   color: #999;
 `;
 
-const FloatingButton = styled(Button)`
-  position: fixed;
-  bottom: 80px;
-  right: 20px;
-  width: 60px;
-  height: 60px;
-  border-radius: 50%;
-  background: linear-gradient(135deg, #1890ff 0%, #2468F2 100%);
-  border: none;
-  box-shadow: 0 4px 16px rgba(24, 144, 255, 0.4);
-  font-size: 14px;
-  font-weight: 600;
-  z-index: 999;
-  
-  &:hover {
-    background: linear-gradient(135deg, #2468F2 0%, #1890ff 100%);
-    transform: scale(1.05);
-    box-shadow: 0 6px 20px rgba(24, 144, 255, 0.5);
-  }
-  
-  &:active {
-    transform: scale(0.95);
-  }
-  
-  @media screen and (min-width: 768px) {
-    right: calc(50% - 207px + 20px);
-  }
-`;
+
 
 const BottomNavigation = styled.div`
   position: fixed;
