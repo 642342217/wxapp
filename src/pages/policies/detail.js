@@ -106,8 +106,8 @@ const PolicyDetailPage = () => {
         ))}
       </StatusFlow>
 
-      {/* 保单信息卡片 */}
-      <PolicyCard>
+
+
         <CardHeader>
           <StatusIconLarge>
             <ClockCircleOutlined style={{ fontSize: '24px', color: '#1890ff' }} />
@@ -115,10 +115,15 @@ const PolicyDetailPage = () => {
           <StatusTitle>保司核保中</StatusTitle>
         </CardHeader>
 
+      {/* 保单信息卡片 */}
+      <PolicyCard>
+
         <PolicyInfo>
           <InfoHeader>
-            <PolicyNumber>PA104342</PolicyNumber>
-            <DetailTitle>详细信息</DetailTitle>
+            <MyTitle>
+              <PolicyNumber>PA104342</PolicyNumber>
+              <DetailTitle>详细信息</DetailTitle>
+            </MyTitle>
           </InfoHeader>
 
           <InfoGrid>
@@ -547,11 +552,14 @@ const PolicyCard = styled.div`
 `;
 
 const CardHeader = styled.div`
-  background-color: #f8f9fa;
-  padding: 20px;
+  background-color: white;
+  padding: 10px 20px;
   display: flex;
   align-items: center;
   gap: 15px;
+  margin: 15px;
+  border-radius: 8px;
+  margin-bottom: 15px;
 `;
 
 const StatusIconLarge = styled.div`
@@ -575,26 +583,15 @@ const PolicyInfo = styled.div`
 `;
 
 const InfoHeader = styled.div`
+  // border-bottom: 1px solid #f0f0f0;
+  // padding-bottom: 20px;
+`;
+
+const MyTitle = styled.div`
   display: flex;
   align-items: baseline;
-  gap: 10px;
-  margin-bottom: 20px;
-  padding-bottom: 15px;
-  border-bottom: 1px solid #f0f0f0;
+  flex-direction: column;
   position: relative;
-`;
-
-const PolicyNumber = styled.div`
-  color: #999;
-  font-size: 14px;
-`;
-
-const DetailTitle = styled.div`
-  color: #1890ff;
-  font-size: 16px;
-  font-weight: 600;
-  position: relative;
-  
   &::before {
     content: '';
     position: absolute;
@@ -604,6 +601,18 @@ const DetailTitle = styled.div`
     width: 3px;
     background-color: #1890ff;
   }
+`;
+
+const PolicyNumber = styled.div`
+  color: #999;
+  font-size: 12px;
+`;
+
+const DetailTitle = styled.div`
+  // color: #1890ff;
+  font-size: 16px;
+  font-weight: 600;
+  position: relative;
 `;
 
 const InfoGrid = styled.div`
@@ -692,7 +701,7 @@ const SectionCard = styled.div`
 
 const SectionHeader = styled.div`
   padding: 15px 20px;
-  border-bottom: 1px solid #f0f0f0;
+  // border-bottom: 1px solid #f0f0f0;
 `;
 
 const SectionTitle = styled.div`
@@ -713,7 +722,7 @@ const SectionTitle = styled.div`
 `;
 
 const SectionContent = styled.div`
-  padding: 20px;
+  padding: 0 20px 20px;
 `;
 
 const BottomTip = styled.div`
