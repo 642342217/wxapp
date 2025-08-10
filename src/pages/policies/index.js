@@ -113,7 +113,6 @@ const PoliciesPage = () => {
     <PoliciesContainer>
       {/* 固定顶部搜索栏 */}
       <SearchHeader>
-        <SearchTitle>按客户搜索</SearchTitle>
         <SearchContainer>
           <SearchInput
             placeholder="请输入客户持有人姓名"
@@ -129,11 +128,14 @@ const PoliciesPage = () => {
             清空
           </ClearButton>
         </SearchContainer>
+        <ResultsCount>
+            {showSearchResults ? `${filteredPolicies.length} 条查询结果` : `${policyData.length} 条查询结果`}
+        </ResultsCount>
       </SearchHeader>
 
       <ContentArea>
         {/* 搜索结果统计 */}
-        <ResultsHeader>
+        {/* <ResultsHeader>
           <ResultsCount>
             {showSearchResults ? `${filteredPolicies.length} 条查询结果` : `${policyData.length} 条查询结果`}
           </ResultsCount>
@@ -142,7 +144,7 @@ const PoliciesPage = () => {
               清空筛选条件
             </ClearFilters>
           )}
-        </ResultsHeader>
+        </ResultsHeader> */}
 
         {/* 保单列表 */}
         <PoliciesList>
@@ -215,7 +217,7 @@ const SearchHeader = styled.div`
   left: 0;
   right: 0;
   background-color: white;
-  padding: 20px 15px;
+  padding: 20px 15px 15px;
   z-index: 1000;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   
@@ -266,7 +268,7 @@ const ClearButton = styled(Button)`
 const ContentArea = styled.div`
   flex: 1;
   overflow-y: auto;
-  padding-top: 140px;
+  padding-top: 120px;
   padding-bottom: 60px;
 `;
 
@@ -282,16 +284,7 @@ const ResultsCount = styled.div`
   font-size: 14px;
   color: #333;
   font-weight: 500;
-`;
-
-const ClearFilters = styled.div`
-  font-size: 14px;
-  color: #2468F2;
-  cursor: pointer;
-  
-  &:hover {
-    text-decoration: underline;
-  }
+  margin-top: 10px;
 `;
 
 const PoliciesList = styled.div`
