@@ -10,6 +10,7 @@ import Dashboard from './pages/dashboard';
 import Profile from './pages/profile';
 import ProposalsPage from './pages/proposals';
 import PoliciesPage from './pages/policies';
+import PolicyDetailPage from './pages/policies/detail';
 
 // 导入全局样式
 import './styles/global.less';
@@ -27,6 +28,7 @@ function App() {
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/profile" element={<Profile />} />
             <Route path="/proposals" element={<ProposalsPage />} />
+            <Route path="/policies/:id" element={<PolicyDetailPage />} />
             <Route path="/policies" element={<PoliciesPage />} />
             {/* 可以添加更多路由 */}
           </Route>

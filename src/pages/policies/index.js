@@ -149,7 +149,7 @@ const PoliciesPage = () => {
         {/* 保单列表 */}
         <PoliciesList>
           {displayPolicies.map((policy) => (
-            <PolicyCard key={policy.id}>
+            <PolicyCard key={policy.id} onClick={() => navigate(`/policies/${policy.id}`)}>
               <PolicyHeader>
                 <PolicyId>{policy.id}</PolicyId>
                 <StatusBadge statusType={policy.statusType}>
@@ -297,6 +297,13 @@ const PolicyCard = styled.div`
   padding: 20px;
   margin-bottom: 15px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  }
 `;
 
 const PolicyHeader = styled.div`
