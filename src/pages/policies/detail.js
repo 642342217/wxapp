@@ -175,6 +175,300 @@ const PolicyDetailPage = () => {
           </InfoGrid>
         </PolicyInfo>
       </PolicyCard>
+
+      {/* 重要日期 */}
+      <SectionCard>
+        <SectionHeader>
+          <SectionTitle>重要日期</SectionTitle>
+        </SectionHeader>
+        <SectionContent>
+          <InfoGrid>
+            <InfoRow>
+              <InfoLabel>首年缴费日</InfoLabel>
+              <InfoValue>暂无</InfoValue>
+            </InfoRow>
+            <InfoRow>
+              <InfoLabel>保司核保通过日</InfoLabel>
+              <InfoValue>暂无</InfoValue>
+            </InfoRow>
+            <InfoRow>
+              <InfoLabel>生效日</InfoLabel>
+              <InfoValue>暂无</InfoValue>
+            </InfoRow>
+            <InfoRow>
+              <InfoLabel>冷静期</InfoLabel>
+              <InfoValue>暂无</InfoValue>
+            </InfoRow>
+            <InfoRow>
+              <InfoLabel>续费日</InfoLabel>
+              <InfoValue>暂无</InfoValue>
+            </InfoRow>
+            <InfoRow>
+              <InfoLabel>签发日</InfoLabel>
+              <InfoValue>暂无</InfoValue>
+            </InfoRow>
+          </InfoGrid>
+        </SectionContent>
+      </SectionCard>
+
+      {/* 产品计划 */}
+      <SectionCard>
+        <SectionHeader>
+          <SectionTitle>产品计划</SectionTitle>
+        </SectionHeader>
+        <SectionContent>
+          <InfoGrid>
+            <InfoRow>
+              <InfoLabel>保司</InfoLabel>
+              <InfoValue>宏利（香港）</InfoValue>
+            </InfoRow>
+            <InfoRow>
+              <InfoLabel>产品</InfoLabel>
+              <InfoValue>宏掌傳承保障計劃-5年</InfoValue>
+            </InfoRow>
+            <InfoRow>
+              <InfoLabel>年期</InfoLabel>
+              <InfoValue>5</InfoValue>
+            </InfoRow>
+            <InfoRow>
+              <InfoLabel>定价方式</InfoLabel>
+              <InfoValue>年缴保费</InfoValue>
+            </InfoRow>
+            <InfoRow>
+              <InfoLabel>货币种类</InfoLabel>
+              <InfoValue>美元USD</InfoValue>
+            </InfoRow>
+            <InfoRow>
+              <InfoLabel>保额</InfoLabel>
+              <InfoValue>未填写</InfoValue>
+            </InfoRow>
+            <InfoRow>
+              <InfoLabel>年缴保费</InfoLabel>
+              <InfoValue>$10,000 USD</InfoValue>
+            </InfoRow>
+            <InfoRow>
+              <InfoLabel>缴费频率</InfoLabel>
+              <InfoValue>年</InfoValue>
+            </InfoRow>
+          </InfoGrid>
+        </SectionContent>
+      </SectionCard>
+
+      {/* 持有人 */}
+      <SectionCard>
+        <SectionHeader>
+          <SectionTitle>持有人</SectionTitle>
+        </SectionHeader>
+        <SectionContent>
+          <InfoGrid>
+            <InfoRow>
+              <InfoLabel>中文姓名</InfoLabel>
+              <InfoValue>袁泳琳</InfoValue>
+            </InfoRow>
+            <InfoRow>
+              <InfoLabel>英文姓名</InfoLabel>
+              <InfoValue>女</InfoValue>
+            </InfoRow>
+            <InfoRow>
+              <InfoLabel>性别</InfoLabel>
+              <InfoValue>女</InfoValue>
+            </InfoRow>
+            <InfoRow>
+              <InfoLabel>出生日期</InfoLabel>
+              <InfoValue>1997-05-28</InfoValue>
+            </InfoRow>
+            <InfoRow>
+              <InfoLabel>国籍</InfoLabel>
+              <InfoValue></InfoValue>
+            </InfoRow>
+            <InfoRow>
+              <InfoLabel>身高</InfoLabel>
+              <InfoValue></InfoValue>
+            </InfoRow>
+            <InfoRow>
+              <InfoLabel>体重</InfoLabel>
+              <InfoValue></InfoValue>
+            </InfoRow>
+            <InfoRow>
+              <InfoLabel>身份证号</InfoLabel>
+              <InfoValue>R8954780J</InfoValue>
+            </InfoRow>
+            <InfoRow>
+              <InfoLabel>身份证签发地</InfoLabel>
+              <InfoValue></InfoValue>
+            </InfoRow>
+            <InfoRow>
+              <InfoLabel>出生日期</InfoLabel>
+              <InfoValue>1997-05-28</InfoValue>
+            </InfoRow>
+            <InfoRow>
+              <InfoLabel>入境证件类型</InfoLabel>
+              <InfoValue>港澳通行证</InfoValue>
+            </InfoRow>
+            <InfoRow>
+              <InfoLabel>入境证件号码</InfoLabel>
+              <InfoValue>R8954780J</InfoValue>
+            </InfoRow>
+            <InfoRow>
+              <InfoLabel>通讯语言</InfoLabel>
+              <InfoValue>否</InfoValue>
+            </InfoRow>
+            <InfoRow>
+              <InfoLabel>婚姻状况</InfoLabel>
+              <InfoValue>已婚</InfoValue>
+            </InfoRow>
+            <InfoRow>
+              <InfoLabel>教育程度</InfoLabel>
+              <InfoValue>1997-05-28</InfoValue>
+            </InfoRow>
+            <InfoRow>
+              <InfoLabel>通讯地址</InfoLabel>
+              <InfoValue>东莞市东城区中信凯旋国际13栋</InfoValue>
+            </InfoRow>
+            <InfoRow>
+              <InfoLabel>联系电话</InfoLabel>
+              <InfoValue>13532302366</InfoValue>
+            </InfoRow>
+            <InfoRow>
+              <InfoLabel>Email</InfoLabel>
+              <InfoValue>434103628@qq.com</InfoValue>
+            </InfoRow>
+          </InfoGrid>
+        </SectionContent>
+      </SectionCard>
+
+      {/* 受保人 */}
+      <SectionCard>
+        <SectionHeader>
+          <SectionTitle>受保人</SectionTitle>
+        </SectionHeader>
+        <SectionContent>
+          <InfoGrid>
+            <InfoRow>
+              <InfoLabel>中文姓名</InfoLabel>
+              <InfoValue>袁泳琳</InfoValue>
+            </InfoRow>
+            <InfoRow>
+              <InfoLabel>英文姓名</InfoLabel>
+              <InfoValue></InfoValue>
+            </InfoRow>
+            <InfoRow>
+              <InfoLabel>性别</InfoLabel>
+              <InfoValue></InfoValue>
+            </InfoRow>
+            <InfoRow>
+              <InfoLabel>出生日期</InfoLabel>
+              <InfoValue></InfoValue>
+            </InfoRow>
+            <InfoRow>
+              <InfoLabel>国籍</InfoLabel>
+              <InfoValue></InfoValue>
+            </InfoRow>
+            <InfoRow>
+              <InfoLabel>身高</InfoLabel>
+              <InfoValue></InfoValue>
+            </InfoRow>
+            <InfoRow>
+              <InfoLabel>体重</InfoLabel>
+              <InfoValue></InfoValue>
+            </InfoRow>
+            <InfoRow>
+              <InfoLabel>身份证号</InfoLabel>
+              <InfoValue>Y441012391</InfoValue>
+            </InfoRow>
+            <InfoRow>
+              <InfoLabel>身份证签发地</InfoLabel>
+              <InfoValue></InfoValue>
+            </InfoRow>
+            <InfoRow>
+              <InfoLabel>出生日期</InfoLabel>
+              <InfoValue></InfoValue>
+            </InfoRow>
+            <InfoRow>
+              <InfoLabel>入境证件类型</InfoLabel>
+              <InfoValue></InfoValue>
+            </InfoRow>
+            <InfoRow>
+              <InfoLabel>入境证件号码</InfoLabel>
+              <InfoValue></InfoValue>
+            </InfoRow>
+            <InfoRow>
+              <InfoLabel>通讯语言</InfoLabel>
+              <InfoValue></InfoValue>
+            </InfoRow>
+            <InfoRow>
+              <InfoLabel>婚姻状况</InfoLabel>
+              <InfoValue></InfoValue>
+            </InfoRow>
+            <InfoRow>
+              <InfoLabel>教育程度</InfoLabel>
+              <InfoValue></InfoValue>
+            </InfoRow>
+            <InfoRow>
+              <InfoLabel>通讯地址</InfoLabel>
+              <InfoValue></InfoValue>
+            </InfoRow>
+            <InfoRow>
+              <InfoLabel>联系电话</InfoLabel>
+              <InfoValue></InfoValue>
+            </InfoRow>
+            <InfoRow>
+              <InfoLabel>Email</InfoLabel>
+              <InfoValue></InfoValue>
+            </InfoRow>
+          </InfoGrid>
+        </SectionContent>
+      </SectionCard>
+
+      {/* 法定收益人/信托人 */}
+      <SectionCard>
+        <SectionHeader>
+          <SectionTitle>法定收益人/信托人</SectionTitle>
+        </SectionHeader>
+        <SectionContent>
+          <InfoGrid>
+            <InfoRow>
+              <InfoLabel>持有人是否法定受益人</InfoLabel>
+              <InfoValue></InfoValue>
+            </InfoRow>
+            <InfoRow>
+              <InfoLabel>公司名称</InfoLabel>
+              <InfoValue>东莞市正兴投资管理有限公司</InfoValue>
+            </InfoRow>
+            <InfoRow>
+              <InfoLabel>公司业务性质</InfoLabel>
+              <InfoValue>投资顾问</InfoValue>
+            </InfoRow>
+            <InfoRow>
+              <InfoLabel>公司地址</InfoLabel>
+              <InfoValue>广东省东莞市东城街道东纵大道2号</InfoValue>
+            </InfoRow>
+            <InfoRow>
+              <InfoLabel>职位及职责</InfoLabel>
+              <InfoValue></InfoValue>
+            </InfoRow>
+            <InfoRow>
+              <InfoLabel>收入</InfoLabel>
+              <InfoValue></InfoValue>
+            </InfoRow>
+            <InfoRow>
+              <InfoLabel>支出</InfoLabel>
+              <InfoValue></InfoValue>
+            </InfoRow>
+            <InfoRow>
+              <InfoLabel>流动资产</InfoLabel>
+              <InfoValue></InfoValue>
+            </InfoRow>
+            <InfoRow>
+              <InfoLabel>工作性质</InfoLabel>
+              <InfoValue></InfoValue>
+            </InfoRow>
+          </InfoGrid>
+        </SectionContent>
+      </SectionCard>
+
+      {/* 底部提示 */}
+      <BottomTip>没有更多了</BottomTip>
     </DetailContainer>
   );
 };
@@ -247,7 +541,9 @@ const StatusConnector = styled.div`
 
 const PolicyCard = styled.div`
   background-color: white;
-  margin-top: 15px;
+  margin: 15px;
+  border-radius: 8px;
+  overflow: hidden;
 `;
 
 const CardHeader = styled.div`
@@ -385,6 +681,47 @@ const StatusBadge = styled.div`
         `;
     }
   }}
+`;
+
+const SectionCard = styled.div`
+  background-color: white;
+  margin: 15px;
+  border-radius: 8px;
+  overflow: hidden;
+`;
+
+const SectionHeader = styled.div`
+  padding: 15px 20px;
+  border-bottom: 1px solid #f0f0f0;
+`;
+
+const SectionTitle = styled.div`
+  color: #333;
+  font-size: 16px;
+  font-weight: 600;
+  position: relative;
+  
+  &::before {
+    content: '';
+    position: absolute;
+    left: -10px;
+    top: 0;
+    bottom: 0;
+    width: 3px;
+    background-color: #1890ff;
+  }
+`;
+
+const SectionContent = styled.div`
+  padding: 20px;
+`;
+
+const BottomTip = styled.div`
+  text-align: center;
+  color: #999;
+  font-size: 14px;
+  padding: 30px 0;
+  margin-bottom: 20px;
 `;
 
 export default PolicyDetailPage;
