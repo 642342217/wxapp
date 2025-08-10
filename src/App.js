@@ -10,7 +10,7 @@ import Dashboard from './pages/dashboard';
 import Profile from './pages/profile';
 
 // 导入全局样式
-import './styles/global.css';
+import './styles/global.less';
 import './App.css';
 
 function App() {

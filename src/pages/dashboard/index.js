@@ -3,6 +3,8 @@ import { Button, Card, Typography, Space, Row, Col, Badge } from 'antd';
 import { UserOutlined, CalendarOutlined, FileTextOutlined, SwapOutlined, LogoutOutlined } from '@ant-design/icons';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
+import backImage from '../../assets/images/back.jpg'; // 路径根据你的文件结构调整
+
 
 const { Title, Text } = Typography;
 
@@ -58,14 +60,13 @@ const Dashboard = () => {
           </LogoContainer>
         </Header>
 
-        <WelcomeCard>
+        <MenuSection>
+          <WelcomeCard>
           <GreetingSection>
             <GreetingText>{userData.greeting} {userData.weatherIcon}</GreetingText>
             <UserName>{userData.name}</UserName>
           </GreetingSection>
         </WelcomeCard>
-
-        <MenuSection>
           <Row gutter={[16, 16]}>
             <Col span={6}>
               <MenuCard>
@@ -102,7 +103,7 @@ const Dashboard = () => {
           </Row>
         </MenuSection>
 
-        <ActionButtonsSection>
+        {/* <ActionButtonsSection>
           <ActionButton>
             <PlusIcon>+</PlusIcon>
             <ActionText>新预约</ActionText>
@@ -111,7 +112,7 @@ const Dashboard = () => {
             <PlusIcon>+</PlusIcon>
             <ActionText>新建议书</ActionText>
           </ActionButton>
-        </ActionButtonsSection>
+        </ActionButtonsSection> */}
 
         <PolicySection>
           <SectionHeader>
@@ -122,15 +123,23 @@ const Dashboard = () => {
           {policyData.map(policy => (
             <PolicyCard key={policy.id}>
               <PolicyHeader>
-                <PolicyId>{policy.id}</PolicyId>
+                <PolicyId>
+                  {policy.id}
+                </PolicyId>
                 <PolicyStatus status={policy.status}>{policy.status}</PolicyStatus>
               </PolicyHeader>
               <PolicyContent>
-                <PolicyTypeTag>{policy.type}</PolicyTypeTag>
-                <PolicyName>{policy.name}</PolicyName>
-                <PolicyCompany>{policy.company}</PolicyCompany>
-                <PolicyAgent>{policy.agent}</PolicyAgent>
-                <PolicyAmount>{policy.amount}</PolicyAmount>
+                <PolicyItem>
+                  <PolicyTypeTag>{policy.type}</PolicyTypeTag>
+                  <PolicyName>{policy.name}</PolicyName>
+                </PolicyItem>
+                <PolicyItem style={{ display: 'flex', justifyContent: 'space-between', marginTop: 10 }}>
+                  <PolicyItem>
+                    <PolicyCompany>{policy.company}</PolicyCompany>
+                    <PolicyAgent>{policy.agent}</PolicyAgent>
+                  </PolicyItem>
+                  <PolicyAmount>{policy.amount}</PolicyAmount>
+                </PolicyItem>
               </PolicyContent>
               <PolicyFooter>
                 <PolicyDate>{policy.date}</PolicyDate>
@@ -236,6 +245,9 @@ const UserName = styled.div`
 `;
 
 const MenuSection = styled.div`
+  width: '90%';
+  background: url(${backImage});
+  background-size: cover;
   padding: 0 15px;
   margin-bottom: 20px;
 `;
@@ -320,75 +332,94 @@ const SectionHeader = styled.div`
 const SectionTitle = styled.div`
   font-size: 16px;
   font-weight: 500;
-  color: #333;
+  border-left: 4px solid #2468F2;
+  padding-left: 10px;
 `;
 
 const ViewMoreLink = styled.a`
   font-size: 14px;
   color: #2468F2;
+  font-weight: 500;
   text-decoration: none;
 `;
 
 const PolicyCard = styled.div`
   background-color: white;
   border-radius: 8px;
-  padding: 15px;
+  padding: 15px 0;
   margin-bottom: 15px;
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
 `;
 
 const PolicyHeader = styled.div`
   display: flex;
+  padding: 0 15px;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 10px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #f0f0f0;
 `;
 
 const PolicyId = styled.div`
   font-size: 16px;
   font-weight: 500;
+  background: linear-gradient(90deg, rgb(255, 255, 255) 0%, rgb(244, 226, 175) 70%); 
 `;
 
 const PolicyStatus = styled.div`
-  font-size: 14px;
+  font-size: 13px;
+  font-weight: 500;
   color: ${props => props.status === '核保中' ? '#2468F2' : props.status === '已生效' ? '#52c41a' : '#333'};
 `;
 
 const PolicyContent = styled.div`
   margin-bottom: 10px;
+  padding: 0 15px;  
+`;
+
+const PolicyItem = styled.div`
+  display: flex;
+  align-items: center;
 `;
 
 const PolicyTypeTag = styled.span`
   display: inline-block;
-  background-color: #f9f0e6;
-  color: #d48806;
+  background-color: rgb(177, 6, 6);
+  color: #fff;
   padding: 2px 8px;
   border-radius: 4px;
   font-size: 12px;
+  font-weight: 500;
   margin-right: 10px;
   margin-bottom: 5px;
 `;
 
 const PolicyName = styled.div`
-  font-size: 16px;
+  display: inline-block;
+  font-size: 14px;
   font-weight: 500;
   margin-bottom: 5px;
 `;
 
 const PolicyCompany = styled.div`
   display: inline-block;
-  background-color: #f0f5ff;
-  color: #2468F2;
+  background-color:rgb(253, 241, 207);
+  color:rgb(237, 154, 10);
   padding: 2px 8px;
-  border-radius: 4px;
+  border-radius: 8px;
   font-size: 12px;
   margin-right: 10px;
 `;
 
 const PolicyAgent = styled.div`
   display: inline-block;
-  font-size: 14px;
-  color: #666;
+  font-size: 12px;
+  background-color:rgb(205, 226, 245);
+  color:rgb(5, 57, 247);
+    border-radius: 8px;
+  padding: 2px 8px;
+
 `;
 
 const PolicyAmount = styled.div`
@@ -396,7 +427,6 @@ const PolicyAmount = styled.div`
   font-weight: 500;
   color: #333;
   text-align: right;
-  margin-top: 5px;
 `;
 
 const PolicyFooter = styled.div`
@@ -404,9 +434,12 @@ const PolicyFooter = styled.div`
   justify-content: space-between;
   font-size: 12px;
   color: #999;
+  padding: 6px 15px 0;
 `;
 
-const PolicyDate = styled.div``;
+const PolicyDate = styled.div`
+  color: #000;
+`;
 
 const PolicyReferrer = styled.div``;
 
