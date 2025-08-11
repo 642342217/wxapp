@@ -372,7 +372,11 @@ const PolicyDetailPage = () => {
               </BeneficiaryRow>
               <BeneficiaryRow>
                 <BeneficiaryLabel>关系</BeneficiaryLabel>
+                <BeneficiaryLabel>父子</BeneficiaryLabel>
+              </BeneficiaryRow>
+              <BeneficiaryRow>
                 <BeneficiaryLabel>受益占比</BeneficiaryLabel>
+                <BeneficiaryLabel>10%</BeneficiaryLabel>
               </BeneficiaryRow>
             </BeneficiaryInfo>
           </BeneficiaryCard>
