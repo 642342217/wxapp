@@ -97,8 +97,8 @@ const ClientsPage = () => {
 
 
   const handleClientClick = (client) => {
-    // 可以跳转到客户详情页面
-    console.log('点击客户:', client);
+    // 跳转到客户详情页面
+    navigate(`/clients/${client.id}`);
   };
 
   return (
