@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Button, Card, Typography, Space, Row, Col, Badge } from 'antd';
 import { UserOutlined, CalendarOutlined, FileTextOutlined, SwapOutlined, LogoutOutlined, LineChartOutlined, UnorderedListOutlined } from '@ant-design/icons';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
+import useUserStore from '../../store/userStore';
 import backImage from '../../assets/images/back.jpg'; // 路径根据你的文件结构调整
 
 
@@ -11,12 +12,16 @@ const { Title, Text } = Typography;
 const Dashboard = () => {
   const navigate = useNavigate();
   
-  // 模拟用户数据
-  const userData = {
-    name: '万承 (孟策)',
-    greeting: '下午好',
-    weatherIcon: '☀️'
-  };
+  // 使用 zustand 全局状态
+  const { userInfo, loading, fetchUserInfo } = useUserStore();
+
+  // 获取用户信息
+  useEffect(() => {
+    // 只有当用户信息为空时才获取用户信息
+    if (!userInfo.name) {
+      fetchUserInfo();
+    }
+  }, [userInfo.name]);
 
   // 模拟建议书数据
   const proposalData = [
@@ -85,8 +90,8 @@ const Dashboard = () => {
         <MenuSection>
           <WelcomeCard>
           <GreetingSection>
-            <GreetingText>{userData.greeting} {userData.weatherIcon}</GreetingText>
-            <UserName>{userData.name}</UserName>
+            <GreetingText>{userInfo.greeting} {userInfo.weatherIcon}</GreetingText>
+            <UserName>{userInfo.name}</UserName>
           </GreetingSection>
         </WelcomeCard>
           <Row gutter={[16, 16]}>
@@ -279,14 +284,14 @@ const GreetingSection = styled.div`
 `;
 
 const GreetingText = styled.div`
-  font-size: 14px;
+  font-size: 16px;
   margin-bottom: 8px;
   opacity: 0.9;
   font-weight: 400;
 `;
 
 const UserName = styled.div`
-  font-size: 20px;
+  font-size: 30px;
   font-weight: 600;
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 `;

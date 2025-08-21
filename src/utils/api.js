@@ -103,7 +103,7 @@ export const del = (url) => {
 // 示例API调用函数
 export const apiService = {
   // 获取用户信息
-  getUserInfo: () => get('/auth/user/info'),
+  getUserInfo: () => post('/auth/user/info'),
   
   // 获取客户列表
   getClients: (params) => get('/clients', params),

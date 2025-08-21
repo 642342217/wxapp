@@ -4,21 +4,19 @@ import { UserOutlined, LockOutlined, BankOutlined, DeleteOutlined, LogoutOutline
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import { tokenManager } from '../../utils/api';
+import useUserStore from '../../store/userStore';
 
 const { Text } = Typography;
 
 const Profile = () => {
   const navigate = useNavigate();
-  
-  // 模拟用户数据
-  const userData = {
-    id: '1345608',
-    name: '万承 (孟策)',
-  };
+  const { userInfo, clearUserInfo } = useUserStore();
 
   const handleLogout = () => {
     // 清除token
     tokenManager.clearToken();
+    // 清除用户信息
+    clearUserInfo();
     // 跳转到登录页
     navigate('/login');
   };
@@ -39,11 +37,11 @@ const Profile = () => {
         </Header>
 
         <IdSection>
-          <IdText>ID: {userData.id}</IdText>
+          <IdText>ID: {userInfo.id || 'N/A'}</IdText>
         </IdSection>
 
         <UserCard>
-          <UserName>{userData.name}</UserName>
+          <UserName>{userInfo.name || '用户'}</UserName>
         </UserCard>
 
         <MenuSection>
