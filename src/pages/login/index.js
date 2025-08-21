@@ -4,6 +4,7 @@ import { UserOutlined, LockOutlined, MobileOutlined, KeyOutlined } from '@ant-de
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import logoSvg from '../../assets/images/logo.svg';
+import { apiService } from '../../utils/api'
 
 const LoginPage = () => {
   const [form] = Form.useForm();
@@ -16,13 +17,21 @@ const LoginPage = () => {
       setLoading(true);
       // 这里可以添加实际的登录逻辑
       console.log('登录信息:', values);
-      
-      // 模拟登录成功
-      setTimeout(() => {
+      const { phone: account, password } = values;
+
+      const res = await apiService.login({
+        account,
+        password
+      })
+      if (res.code === 0) {
+        const { data } = res;
         message.success('登录成功');
         navigate('/dashboard');
         setLoading(false);
-      }, 1000);
+      } else {
+        message.error(res.msg || "登录失败");
+        setLoading(false);
+      }
     } catch (error) {
       message.error('登录失败，请重试');
       setLoading(false);
@@ -99,9 +108,9 @@ const LoginPage = () => {
           <LoginButton type="primary" htmlType="submit" loading={loading}>
             安全登录
           </LoginButton>
-          <SmsLoginLink onClick={toggleLoginType}>
+          {/* <SmsLoginLink onClick={toggleLoginType}>
             {loginType === 'password' ? '短信验证码登录' : '手机号/密码登录'}
-          </SmsLoginLink>
+          </SmsLoginLink> */}
         </ButtonsWrapper>
       </LoginForm>
       
