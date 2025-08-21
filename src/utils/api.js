@@ -1,6 +1,31 @@
 // API基础配置
 const API_BASE_URL = '/api'; // 使用代理转发，所有/api请求会被转发到https://wctest.mynatapp.cc
 
+// Token管理
+const TOKEN_KEY = 'auth_token';
+
+export const tokenManager = {
+  // 设置token
+  setToken: (token) => {
+    localStorage.setItem(TOKEN_KEY, token);
+  },
+  
+  // 获取token
+  getToken: () => {
+    return localStorage.getItem(TOKEN_KEY);
+  },
+  
+  // 清除token
+  clearToken: () => {
+    localStorage.removeItem(TOKEN_KEY);
+  },
+  
+  // 检查是否有token
+  hasToken: () => {
+    return !!localStorage.getItem(TOKEN_KEY);
+  }
+};
+
 // 通用请求方法
 const request = async (url, options = {}) => {
   const defaultOptions = {
@@ -11,6 +36,12 @@ const request = async (url, options = {}) => {
   };
 
   const config = { ...defaultOptions, ...options };
+  
+  // 自动添加token到请求头
+  const token = tokenManager.getToken();
+  if (token) {
+    config.headers.token = token;
+  }
 
   // 如果有请求体且不是FormData，则转换为JSON字符串
   if (config.body && !(config.body instanceof FormData)) {
@@ -19,8 +50,15 @@ const request = async (url, options = {}) => {
 
   try {
     const response = await fetch(`${API_BASE_URL}${url}`, config);
+    console.log(response, 'chj00000')
     
     if (!response.ok) {
+      // 如果是401未授权，清除token
+      if (response.status === 401) {
+        tokenManager.clearToken();
+        // 可以在这里添加跳转到登录页的逻辑
+        window.location.href = '/login';
+      }
       throw new Error(`HTTP error! status: ${response.status}`);
     }
     
@@ -65,7 +103,7 @@ export const del = (url) => {
 // 示例API调用函数
 export const apiService = {
   // 获取用户信息
-  getUserInfo: () => get('/user/info'),
+  getUserInfo: () => get('/auth/user/info'),
   
   // 获取客户列表
   getClients: (params) => get('/clients', params),
@@ -81,6 +119,8 @@ export const apiService = {
   
   // 登出
   logout: () => post('/auth/logout'),
+
+
 };
 
 export default apiService;

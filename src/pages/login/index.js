@@ -4,7 +4,7 @@ import { UserOutlined, LockOutlined, MobileOutlined, KeyOutlined } from '@ant-de
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import logoSvg from '../../assets/images/logo.svg';
-import { apiService } from '../../utils/api'
+import { apiService, tokenManager } from '../../utils/api'
 
 const LoginPage = () => {
   const [form] = Form.useForm();
@@ -25,6 +25,8 @@ const LoginPage = () => {
       })
       if (res.code === 0) {
         const { data } = res;
+        // 保存token到本地存储
+        tokenManager.setToken(data);
         message.success('登录成功');
         navigate('/dashboard');
         setLoading(false);

@@ -13,6 +13,7 @@ import PoliciesPage from './pages/policies';
 import PolicyDetailPage from './pages/policies/detail';
 import ClientsPage from './pages/clients';
 import ClientDetailPage from './pages/clients/detail';
+import ProtectedRoute from './components/ProtectedRoute';
 
 // 导入全局样式
 import './styles/global.less';
@@ -23,10 +24,15 @@ function App() {
     <ConfigProvider locale={zhCN}>
       <Router>
         <Routes>
-          {/* 主布局下的路由 */}
-          <Route element={<MainLayout />}>
-            {/* 登录页面 */}
-            <Route path="/login" element={<LoginPage />} />
+          {/* 登录页面 - 不需要保护 */}
+          <Route path="/login" element={<LoginPage />} />
+          
+          {/* 主布局下的受保护路由 */}
+          <Route element={
+            <ProtectedRoute>
+              <MainLayout />
+            </ProtectedRoute>
+          }>
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/profile" element={<Profile />} />
             <Route path="/proposals" element={<ProposalsPage />} />
@@ -34,11 +40,10 @@ function App() {
             <Route path="/policies" element={<PoliciesPage />} />
             <Route path="/my-clients" element={<ClientsPage />} />
             <Route path="/clients/:id" element={<ClientDetailPage />} />
-            {/* 可以添加更多路由 */}
           </Route>
           
-          {/* 默认重定向到登录页 */}
-          <Route path="*" element={<Navigate to="/login" replace />} />
+          {/* 默认重定向到dashboard */}
+          <Route path="*" element={<Navigate to="/dashboard" replace />} />
         </Routes>
       </Router>
     </ConfigProvider>

@@ -3,6 +3,7 @@ import { Typography, Divider } from 'antd';
 import { UserOutlined, LockOutlined, BankOutlined, DeleteOutlined, LogoutOutlined } from '@ant-design/icons';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
+import { tokenManager } from '../../utils/api';
 
 const { Text } = Typography;
 
@@ -16,7 +17,9 @@ const Profile = () => {
   };
 
   const handleLogout = () => {
-    // 登出逻辑
+    // 清除token
+    tokenManager.clearToken();
+    // 跳转到登录页
     navigate('/login');
   };
 
