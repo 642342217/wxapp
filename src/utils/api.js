@@ -120,6 +120,8 @@ export const apiService = {
   // 获取银行账户
   getAccounts: (params) => post('/app/account/page', params),
 
+  addAccount: (params) => post('/app/account/add', params),
+
   // 获取我的客户列表
   getCustomers: (params) => post('/app/custom/page', params),
 

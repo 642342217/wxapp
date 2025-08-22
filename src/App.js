@@ -13,6 +13,8 @@ import PoliciesPage from './pages/policies';
 import PolicyDetailPage from './pages/policies/detail';
 import ClientsPage from './pages/clients';
 import ClientDetailPage from './pages/clients/detail';
+import AccountsPage from './pages/accounts';
+import AddAccountPage from './pages/accounts/add';
 import ProtectedRoute from './components/ProtectedRoute';
 
 // 导入全局样式
@@ -40,6 +42,8 @@ function App() {
             <Route path="/policies" element={<PoliciesPage />} />
             <Route path="/my-clients" element={<ClientsPage />} />
             <Route path="/clients/:id" element={<ClientDetailPage />} />
+            <Route path="/accounts" element={<AccountsPage />} />
+            <Route path="/accounts/add" element={<AddAccountPage />} />
           </Route>
           
           {/* 默认重定向到dashboard */}

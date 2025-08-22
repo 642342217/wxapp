@@ -57,7 +57,7 @@ const Profile = () => {
             </MenuIcon>
             <MenuText>修改密码</MenuText>
           </MenuItem>
-          <MenuItem onClick={() => handleNavigation('/bank-account')}>
+          <MenuItem onClick={() => handleNavigation('/accounts')}>
             <MenuIcon>
               <BankOutlined />
             </MenuIcon>
