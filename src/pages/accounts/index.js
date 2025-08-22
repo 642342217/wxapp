@@ -120,6 +120,8 @@ const AccountsPage = () => {
             <CurrencyContainer>
               <CurrencyTag>HKD</CurrencyTag>
             </CurrencyContainer>
+            
+            {account.status !== 1 && <DisabledOverlay />}
           </AccountItem>
         ))}
       </AccountsList>
@@ -191,6 +193,7 @@ const AccountItem = styled.div`
   padding: 20px;
   margin-bottom: 10px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  position: relative;
 `;
 
 const AccountHeader = styled.div`
@@ -262,6 +265,18 @@ const NoMoreContainer = styled.div`
 const NoMoreText = styled.div`
   font-size: 14px;
   color: #999;
+`;
+
+const DisabledOverlay = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(0.2px);
+  border-radius: 8px;
+  pointer-events: none;
 `;
 
 export default AccountsPage;
