@@ -81,6 +81,18 @@ const AccountsPage = () => {
     return status === 1 ? '#52c41a' : '#ff4d4f';
   };
 
+  const formatDateTime = (dateTimeStr) => {
+    if (!dateTimeStr) return '';
+    const date = new Date(dateTimeStr);
+    return date.toLocaleString('zh-CN', {
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit',
+      hour: '2-digit',
+      minute: '2-digit'
+    });
+  };
+
   return (
     <AccountsContainer>
       <Header>
@@ -95,22 +107,19 @@ const AccountsPage = () => {
         {accounts.map((account, index) => (
           <AccountItem key={account.id || index}>
             <AccountHeader>
-              <BankName>{account.bankName}</BankName>
+              <BankName>{account.bank}</BankName>
               <Status color={getStatusColor(account.status)}>
                 {getStatusText(account.status)}
               </Status>
             </AccountHeader>
             
-            <AccountNumber>{account.accountNumber}</AccountNumber>
-            <AccountName>{account.accountName}</AccountName>
+            <AccountNumber>{account.fastNum}</AccountNumber>
             
-            <CurrencyTags>
-              {account.supportCurrency && account.supportCurrency.split(',').map((currency, idx) => (
-                <CurrencyTag key={idx} currency={currency.trim()}>
-                  {currency.trim()}
-                </CurrencyTag>
-              ))}
-            </CurrencyTags>
+            <AccountName>{account.account}</AccountName>
+            
+            <CurrencyContainer>
+              <CurrencyTag>HKD</CurrencyTag>
+            </CurrencyContainer>
           </AccountItem>
         ))}
       </AccountsList>
@@ -198,18 +207,19 @@ const BankName = styled.div`
 `;
 
 const Status = styled.div`
-  padding: 4px 8px;
-  border-radius: 4px;
+  padding: 6px 12px;
+  border-radius: 16px;
   font-size: 12px;
   color: white;
   background-color: ${props => props.color};
+  font-weight: 500;
 `;
 
 const AccountNumber = styled.div`
   font-size: 18px;
   font-weight: 600;
   color: #333;
-  margin-bottom: 8px;
+  margin-bottom: 12px;
   letter-spacing: 1px;
 `;
 
@@ -217,20 +227,21 @@ const AccountName = styled.div`
   font-size: 14px;
   color: #666;
   margin-bottom: 15px;
+  font-weight: 400;
 `;
 
-const CurrencyTags = styled.div`
+const CurrencyContainer = styled.div`
   display: flex;
   gap: 8px;
 `;
 
 const CurrencyTag = styled.div`
   padding: 6px 12px;
-  border-radius: 20px;
+  background-color: #ff4d4f;
+  color: white;
+  border-radius: 16px;
   font-size: 12px;
   font-weight: 500;
-  color: white;
-  background-color: ${props => props.currency === 'HKD' ? '#ff4d4f' : '#1890ff'};
 `;
 
 const LoadingContainer = styled.div`
