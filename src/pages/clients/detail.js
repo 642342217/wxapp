@@ -1,45 +1,63 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { ArrowLeftOutlined, RightOutlined } from '@ant-design/icons';
+import { message } from 'antd';
 import styled from 'styled-components';
 import { useNavigate, useParams } from 'react-router-dom';
+import { apiService } from '../../utils/api'
+
 
 const ClientDetailPage = () => {
   const navigate = useNavigate();
   const { id } = useParams();
+  const [clientData, setClientData] = useState({});
 
   const handleBack = () => {
     navigate(-1);
   };
 
+  useEffect(() => {
+    apiService.getCustomerDetail({ customId: id })
+      .then(res => {
+        console.log(res, 'chjrrr')
+        const { code, data: { customBaseInfo, customWorkInfo } } = res || {};
+        if (res.code === 0) {
+          setClientData({ ...customBaseInfo, ...customWorkInfo });
+        }
+      })
+      .catch(err => {
+        message.error("网络错误，请刷新重试")
+      })
+  })
+
   // Mock客户详细数据
-  const clientData = {
-    name: '莫婉柠',
-    englishName: '',
-    idNumber: 'Y441012391',
-    idAddress: '',
-    entryDocType: '港澳通行证',
-    docNumber: '',
-    address: '',
-    postcode: '',
-    phone: '',
-    nationality: '',
-    birthDate: '',
-    gender: '女',
-    height: '',
-    weight: '',
-    smoking: '不吸烟',
-    maritalStatus: '',
-    education: '',
-    email: '',
-    companyName: '',
-    companyAddress: '',
-    monthlyIncome: '',
-    monthlyExpense: '',
-    liquidAssets: '',
-    businessNature: '',
-    position: '',
-    workYears: ''
-  };
+  // const clientData = {
+  //   name: '莫婉柠',
+  //   englishName: '',
+  //   idNumber: 'Y441012391',
+  //   idAddress: '',
+  //   entryDocType: '港澳通行证',
+  //   docNumber: '',
+  //   address: '',
+  //   postcode: '',
+  //   phone: '',
+  //   nationality: '',
+  //   birthDate: '',
+  //   gender: '女',
+  //   height: '',
+  //   weight: '',
+  //   smoking: '不吸烟',
+  //   maritalStatus: '',
+  //   education: '',
+  //   email: '',
+  //   companyName: '',
+  //   companyAddress: '',
+  //   monthlyIncome: '',
+  //   monthlyExpense: '',
+  //   liquidAssets: '',
+  //   businessNature: '',
+  //   position: '',
+  //   workYears: ''
+  // };
 
   return (
     <DetailContainer>
@@ -53,23 +71,23 @@ const ClientDetailPage = () => {
           <FormGrid>
             <FormRow>
               <FormLabel>中文姓名</FormLabel>
-              <FormValue>{clientData.name || '莫婉柠'}</FormValue>
+              <FormValue>{clientData.name || '请输入中文姓名'}</FormValue>
             </FormRow>
             <FormRow>
               <FormLabel>英文姓名</FormLabel>
-              <FormValue placeholder>请输入客户英文姓名</FormValue>
+              <FormValue placeholder>{clientData.nameEn || '请输入客户英文姓名'}</FormValue>
             </FormRow>
             <FormRow>
               <FormLabel>身份证号码</FormLabel>
-              <FormValue>{clientData.idNumber}</FormValue>
+              <FormValue>{clientData.number || '请输入身份证号码'}</FormValue>
             </FormRow>
             <FormRow>
               <FormLabel>身份证地址</FormLabel>
-              <FormValue placeholder>请输入身份证地址</FormValue>
+              <FormValue placeholder>{clientData.address || '请输入身份证地址'}</FormValue>
             </FormRow>
             <FormRow>
               <FormLabel>入港证件类型</FormLabel>
-              <FormValue hasArrow>{clientData.entryDocType} <RightOutlined /></FormValue>
+              <FormValue hasArrow>{{ 1: '港澳通行证', 2: '护照'}[clientData.hkType] || "请选择入港证件类型"} <RightOutlined /></FormValue>
             </FormRow>
             <FormRow>
               <FormLabel>证件号码</FormLabel>

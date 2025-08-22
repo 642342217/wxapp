@@ -116,6 +116,14 @@ export const apiService = {
   
   // 登录
   login: (credentials) => post('/auth/user/login', credentials),
+
+  // 获取银行账户
+  getAccounts: (params) => post('/app/account/page', params),
+
+  // 获取我的客户列表
+  getCustomers: (params) => post('/app/custom/page', params),
+
+  getCustomerDetail: (params) => post('/app/custom/info', params),
   
   // 登出
   logout: () => post('/auth/logout'),
