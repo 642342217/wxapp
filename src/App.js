@@ -15,6 +15,7 @@ import ClientsPage from './pages/clients';
 import ClientDetailPage from './pages/clients/detail';
 import AccountsPage from './pages/accounts';
 import AddAccountPage from './pages/accounts/add';
+import AccountDetailPage from './pages/accounts/detail';
 import ProtectedRoute from './components/ProtectedRoute';
 
 // 导入全局样式
@@ -44,6 +45,7 @@ function App() {
             <Route path="/clients/:id" element={<ClientDetailPage />} />
             <Route path="/accounts" element={<AccountsPage />} />
             <Route path="/accounts/add" element={<AddAccountPage />} />
+            <Route path="/accounts/:id" element={<AccountDetailPage />} />
           </Route>
           
           {/* 默认重定向到dashboard */}

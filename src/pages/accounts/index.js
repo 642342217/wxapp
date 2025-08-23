@@ -77,6 +77,12 @@ const AccountsPage = () => {
     navigate('/accounts/add');
   };
 
+  const handleAccountClick = (account) => {
+    navigate(`/accounts/${account.id}`, { 
+      state: { account } 
+    });
+  };
+
   const getStatusText = (status) => {
     return status === 1 ? '激活' : '失效';
   };
@@ -109,7 +115,7 @@ const AccountsPage = () => {
 
       <AccountsList>
         {accounts.map((account, index) => (
-          <AccountItem key={account.id || index}>
+          <AccountItem key={account.id || index} onClick={() => handleAccountClick(account)}>
             <AccountHeader>
               <BankName>{account.bank}</BankName>
               <Status color={getStatusColor(account.status)}>
@@ -198,6 +204,12 @@ const AccountItem = styled.div`
   margin-bottom: 10px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   position: relative;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+  
+  &:hover {
+    transform: translateY(-2px);
+  }
 `;
 
 const AccountHeader = styled.div`
