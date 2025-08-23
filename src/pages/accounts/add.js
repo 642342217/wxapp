@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { ArrowLeftOutlined, FileTextOutlined } from '@ant-design/icons';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
+import { message } from 'antd';
 import { apiService } from '../../utils/api';
 
 const AddAccountPage = () => {
@@ -52,28 +53,32 @@ const AddAccountPage = () => {
   const validateForm = () => {
     const newErrors = {};
     
-    if (formData.supportCurrency.length === 0) {
-      newErrors.supportCurrency = '请选择支持币种';
-    }
+    // if (formData.supportCurrency.length === 0) {
+    //   newErrors.supportCurrency = '请选择支持币种';
+    // }
     
     if (!formData.accountName.trim()) {
       newErrors.accountName = '请填写账户名称';
     }
     
-    if (!formData.changeReason.trim()) {
-      newErrors.changeReason = '请填写更换账户原因';
-    }
+    // if (!formData.changeReason.trim()) {
+    //   newErrors.changeReason = '请填写更换账户原因';
+    // }
     
-    if (!formData.accountNumber.trim()) {
-      newErrors.accountNumber = '请填写账号';
-    }
+    // if (!formData.accountNumber.trim()) {
+    //   newErrors.accountNumber = '请填写账号';
+    // }
     
-    if (!formData.swiftCode.trim()) {
-      newErrors.swiftCode = '请填写SWIFT代码';
-    }
+    // if (!formData.swiftCode.trim()) {
+    //   newErrors.swiftCode = '请填写SWIFT代码';
+    // }
     
     if (!formData.bankName.trim()) {
       newErrors.bankName = '请填写银行名称';
+    }
+    
+    if (!formData.transferCode.trim()) {
+      newErrors.transferCode = '请填写转数快账号';
     }
     
     setErrors(newErrors);
@@ -81,7 +86,9 @@ const AddAccountPage = () => {
   };
 
   const handleSubmit = async () => {
+    console.log('ssss')
     if (!validateForm()) {
+      console.log(0)
       return;
     }
     
@@ -90,10 +97,11 @@ const AddAccountPage = () => {
     try {
       const submitData = {
         ...formData,
-        supportCurrency: formData.supportCurrency.join(',')
       };
+
+      const { accountName, bankName, transferCode } = submitData;
       
-      const response = await apiService.addAccount(submitData);
+      const response = await apiService.addAccount({ account: accountName, bank: bankName, fastNum: transferCode });
       
       if (response.code === 0) {
         // 提交成功，返回列表页面
@@ -103,7 +111,7 @@ const AddAccountPage = () => {
       }
     } catch (error) {
       console.error('提交银行账户错误:', error);
-      alert('提交失败，请重试');
+      message.error('提交失败，请重试');
     } finally {
       setLoading(false);
     }
@@ -117,9 +125,9 @@ const AddAccountPage = () => {
   return (
     <AddAccountContainer>
       <Header>
-        <BackButton onClick={handleBack}>
+        {/* <BackButton onClick={handleBack}>
           <ArrowLeftOutlined />
-        </BackButton>
+        </BackButton> */}
         <HeaderTitle>收款银行账户信息详情</HeaderTitle>
       </Header>
 
@@ -129,7 +137,7 @@ const AddAccountPage = () => {
           <CurrencyContainer>
             <CurrencyOption 
               selected={formData.supportCurrency.includes('HKD')}
-              onClick={() => handleCurrencyChange('HKD')}
+              // onClick={() => handleCurrencyChange('HKD')}
             >
               <CheckIcon selected={formData.supportCurrency.includes('HKD')}>✓</CheckIcon>
               HKD
@@ -148,7 +156,7 @@ const AddAccountPage = () => {
           />
           {errors.accountName && <ErrorText>{errors.accountName}</ErrorText>}
         </FormSection>
-
+{/* 
         <FormSection>
           <FormLabel required>更换账户原因</FormLabel>
           <FormTextArea
@@ -158,9 +166,9 @@ const AddAccountPage = () => {
             $error={!!errors.changeReason}
           />
           {errors.changeReason && <ErrorText>{errors.changeReason}</ErrorText>}
-        </FormSection>
+        </FormSection> */}
 
-        <FormSection>
+        {/* <FormSection>
           <FormLabel required>账号</FormLabel>
           <FormInput
             placeholder="请填写收款银行卡账号"
@@ -169,18 +177,20 @@ const AddAccountPage = () => {
             $error={!!errors.accountNumber}
           />
           {errors.accountNumber && <ErrorText>{errors.accountNumber}</ErrorText>}
-        </FormSection>
+        </FormSection> */}
 
         <FormSection>
-          <FormLabel>转数快</FormLabel>
+          <FormLabel required>转数快</FormLabel>
           <FormInput
-            placeholder="请填写转数快账号（选填）"
+            placeholder="请填写转数快账号"
             value={formData.transferCode}
             onChange={(e) => handleInputChange('transferCode', e.target.value)}
+            $error={!!errors.transferCode}
           />
+          {errors.transferCode && <ErrorText>{errors.transferCode}</ErrorText>}
         </FormSection>
 
-        <FormSection>
+        {/* <FormSection>
           <FormLabel required>SWIFT代码</FormLabel>
           <FormInput
             placeholder="请输入SWIFT代码，例如:CHASUS333"
@@ -189,7 +199,7 @@ const AddAccountPage = () => {
             $error={!!errors.swiftCode}
           />
           {errors.swiftCode && <ErrorText>{errors.swiftCode}</ErrorText>}
-        </FormSection>
+        </FormSection> */}
 
         <FormSection>
           <FormLabel required>银行名称</FormLabel>
@@ -202,21 +212,21 @@ const AddAccountPage = () => {
           {errors.bankName && <ErrorText>{errors.bankName}</ErrorText>}
         </FormSection>
 
-        <FormSection>
+        {/* <FormSection>
           <FormLabel>银行地址</FormLabel>
           <FormInput
             placeholder="请填写银行地址（选填）"
             value={formData.bankAddress}
             onChange={(e) => handleInputChange('bankAddress', e.target.value)}
           />
-        </FormSection>
+        </FormSection> */}
 
-        <AgreementSection>
+        {/* <AgreementSection>
           <AgreementButton onClick={handleViewAgreement}>
             <FileTextOutlined />
             查看协议文件
           </AgreementButton>
-        </AgreementSection>
+        </AgreementSection> */}
 
         <SubmitButton onClick={handleSubmit} disabled={loading}>
           {loading ? '提交中...' : '提交'}

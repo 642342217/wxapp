@@ -19,7 +19,7 @@ const AccountsPage = () => {
     try {
       const params = {
         pageSize: "10",
-        pageNum: (pageNum - 1).toString()
+        pageNum: (pageNum).toString()
       };
       
       const response = await apiService.getAccounts(params);
