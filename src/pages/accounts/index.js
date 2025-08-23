@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { PlusOutlined } from '@ant-design/icons';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
@@ -10,6 +10,7 @@ const AccountsPage = () => {
   const [loading, setLoading] = useState(false);
   const [hasMore, setHasMore] = useState(true);
   const [page, setPage] = useState(1);
+  const isInitializedRef = useRef(false);
 
   // 加载银行账户数据
   const loadAccounts = useCallback(async (pageNum) => {
@@ -46,7 +47,10 @@ const AccountsPage = () => {
 
   // 初始加载
   useEffect(() => {
-    loadAccounts(1);
+    if (!isInitializedRef.current) {
+      isInitializedRef.current = true;
+      loadAccounts(1);
+    }
   }, [loadAccounts]);
 
   // 滚动加载更多

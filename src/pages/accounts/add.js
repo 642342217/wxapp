@@ -8,7 +8,7 @@ const AddAccountPage = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
-    supportCurrency: ['HKD', 'USD'], // 默认选中HKD和USD
+    supportCurrency: ['HKD'], // 默认选中HKD和USD
     accountName: '',
     changeReason: '',
     accountNumber: '',
@@ -25,6 +25,7 @@ const AddAccountPage = () => {
   };
 
   const handleCurrencyChange = (currency) => {
+    console.log(currency, 'chjcccc',formData)
     setFormData(prev => ({
       ...prev,
       supportCurrency: prev.supportCurrency.includes(currency)
@@ -132,13 +133,6 @@ const AddAccountPage = () => {
             >
               <CheckIcon selected={formData.supportCurrency.includes('HKD')}>✓</CheckIcon>
               HKD
-            </CurrencyOption>
-            <CurrencyOption 
-              selected={formData.supportCurrency.includes('USD')}
-              onClick={() => handleCurrencyChange('USD')}
-            >
-              <CheckIcon selected={formData.supportCurrency.includes('USD')}>✓</CheckIcon>
-              USD
             </CurrencyOption>
           </CurrencyContainer>
           {errors.supportCurrency && <ErrorText>{errors.supportCurrency}</ErrorText>}
