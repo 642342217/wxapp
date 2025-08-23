@@ -3,6 +3,7 @@ import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import { ArrowLeftOutlined } from '@ant-design/icons';
 import { Dialog } from 'antd-mobile';
 import styled from 'styled-components';
+import moment from 'moment';
 
 const AccountDetailPage = () => {
   const { id } = useParams();
@@ -99,15 +100,7 @@ const AccountDetailPage = () => {
 
   const formatDateTime = (dateTimeStr) => {
     if (!dateTimeStr) return '';
-    const date = new Date(dateTimeStr);
-    return date.toLocaleString('zh-CN', {
-      year: 'numeric',
-      month: '2-digit',
-      day: '2-digit',
-      hour: '2-digit',
-      minute: '2-digit',
-      second: '2-digit'
-    });
+    return moment(dateTimeStr).format('YYYY-MM-DD HH:mm:SS');
   };
 
   if (!account) {
