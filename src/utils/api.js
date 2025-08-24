@@ -117,6 +117,56 @@ export const apiService = {
   // 登录
   login: (credentials) => post('/auth/user/login', credentials),
 
+  // 获取验证码 - 使用fetch获取响应头中的captchaKey和图片数据
+  getCaptcha: async (params = {}) => {
+    const queryString = new URLSearchParams(params).toString();
+    const url = queryString ? `/common/captcha/get?${queryString}` : '/common/captcha/get';
+    
+    const config = {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    };
+    
+    // 自动添加token到请求头
+    const token = tokenManager.getToken();
+    if (token) {
+      config.headers.token = token;
+    }
+    
+    try {
+      const response = await fetch(`${API_BASE_URL}${url}`, config);
+      
+      if (!response.ok) {
+        if (response.status === 401) {
+          tokenManager.clearToken();
+          window.location.href = '/login';
+        }
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      
+      // 获取响应头中的captchaKey
+      const captchaKey = response.headers.get('captchaKey');
+      
+      // 获取图片数据
+      const imageBlob = await response.blob();
+      
+      // 创建图片URL
+      const imageUrl = URL.createObjectURL(imageBlob);
+      
+      // 返回包含captchaKey和图片URL的对象
+      return {
+        captchaKey,
+        imageUrl,
+        imageBlob
+      };
+    } catch (error) {
+      console.error('获取验证码失败:', error);
+      throw error;
+    }
+  },
+
   // 获取银行账户
   getAccounts: (params) => post('/app/account/page', params),
 

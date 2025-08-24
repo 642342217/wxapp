@@ -11,31 +11,63 @@ const LoginPage = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [loginType, setLoginType] = useState('password'); // 'password' 或 'sms'
+  const [showCaptcha, setShowCaptcha] = useState(false); // 是否显示验证码
+  const [captchaData, setCaptchaData] = useState(null); // 验证码数据
+  const [captchaLoading, setCaptchaLoading] = useState(false); // 验证码加载状态
+
+  // 获取验证码
+  const getCaptchaImage = async () => {
+    try {
+      setCaptchaLoading(true);
+      const result = await apiService.getCaptcha();
+      setCaptchaData(result);
+      setShowCaptcha(true);
+    } catch (error) {
+      message.error('获取验证码失败');
+    } finally {
+      setCaptchaLoading(false);
+    }
+  };
+
+  // 刷新验证码
+  const refreshCaptcha = () => {
+    getCaptchaImage();
+  };
 
   const handleLogin = async (values) => {
     try {
       setLoading(true);
-      // 这里可以添加实际的登录逻辑
       console.log('登录信息:', values);
-      const { phone: account, password } = values;
+      const { phone: account, password, captcha } = values;
 
-      const res = await apiService.login({
+      const loginData = {
         account,
         password
-      })
+      };
+
+      // 如果显示了验证码，则添加验证码相关参数
+      if (showCaptcha && captchaData) {
+        loginData.captcha = captcha;
+        loginData.captchaKey = captchaData.captchaKey;
+      }
+
+      const res = await apiService.login(loginData);
+      
       if (res.code === 0) {
         const { data } = res;
-        // 保存token到本地存储
         tokenManager.setToken(data);
         message.success('登录成功');
         navigate('/dashboard');
-        setLoading(false);
+      } else if (res.code === 402) {
+        // 需要验证码验证
+        message.warning('登录失败次数过多，请输入验证码');
+        await getCaptchaImage();
       } else {
         message.error(res.msg || "登录失败");
-        setLoading(false);
       }
     } catch (error) {
       message.error('登录失败，请重试');
+    } finally {
       setLoading(false);
     }
   };
@@ -87,9 +119,37 @@ const LoginPage = () => {
               <PasswordInput 
                 placeholder="请输入密码"
                 iconRender={() => null}
-                // iconRender={(visible) => (visible ? <KeyOutlined /> : <KeyOutlined />)}
               />
             </Form.Item>
+            
+            {/* 验证码输入 */}
+            {showCaptcha && (
+              <>
+                <CaptchaLabel>图形验证码</CaptchaLabel>
+                <CaptchaWrapper>
+                  <Form.Item
+                    name="captcha"
+                    rules={[{ required: true, message: '请输入验证码' }]}
+                    style={{ flex: 1, marginBottom: 0 }}
+                  >
+                    <CaptchaInput 
+                      placeholder="请输入验证码"
+                    />
+                  </Form.Item>
+                  <CaptchaImageWrapper>
+                    {captchaLoading ? (
+                      <CaptchaLoading>加载中...</CaptchaLoading>
+                    ) : (
+                      <CaptchaImage 
+                        src={captchaData?.imageUrl} 
+                        alt="验证码" 
+                        onClick={refreshCaptcha}
+                      />
+                    )}
+                  </CaptchaImageWrapper>
+                </CaptchaWrapper>
+              </>
+            )}
           </>
         ) : (
           <>
@@ -327,6 +387,62 @@ const HighlightText = styled.div`
   color: #2468F2;
   margin-top: 5px;
   font-weight: 600;
+`;
+
+const CaptchaLabel = styled.div`
+  font-size: 10px;
+  color: #888;
+  margin-bottom: 8px;
+  padding: 2px 4px;
+  width: fit-content;
+  border-radius: 4px;
+  background-color: rgb(230, 229, 229);
+`;
+
+const CaptchaWrapper = styled.div`
+  display: flex;
+  align-items: flex-end;
+  gap: 10px;
+  margin-bottom: 20px;
+`;
+
+const CaptchaInput = styled(Input)`
+  height: 50px;
+  border: none;
+  border-bottom: 1px solid rgb(62, 61, 61);
+  border-radius: 0;
+  padding-left: 0;
+  background-color: transparent !important;
+  box-shadow: none !important;
+  
+  &:focus, &:hover {
+    background-color: transparent;
+    border-bottom: 1px solid rgb(62, 61, 61);
+  }
+`;
+
+const CaptchaImageWrapper = styled.div`
+  width: 100px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #d9d9d9;
+  border-radius: 4px;
+  cursor: pointer;
+  background-color: #f5f5f5;
+`;
+
+const CaptchaImage = styled.img`
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  cursor: pointer;
+`;
+
+const CaptchaLoading = styled.div`
+  font-size: 12px;
+  color: #999;
 `;
 
 export default LoginPage;
