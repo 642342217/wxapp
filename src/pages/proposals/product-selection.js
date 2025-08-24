@@ -22,12 +22,11 @@ const ProductSelectionPage = () => {
     { id: 6, name: '宏利保险', region: '香港' },
     { id: 7, name: '万通保险', region: '香港' },
     { id: 8, name: '富卫人寿', region: '香港' },
-        { id: 9, name: '万通保险', region: '香港' },
+    { id: 9, name: '万通保险', region: '香港' },
     { id: 10, name: '万通保险', region: '香港' },
     { id: 11, name: '万通保险', region: '香港' },
     { id: 12, name: '万通保险', region: '香港' },
     { id: 13, name: '万通保险', region: '香港' },
-
   ];
 
   // 模拟产品数据
@@ -172,20 +171,22 @@ const ProductSelectionPage = () => {
                   selected={selectedProduct?.id === product.id}
                   onClick={() => handleProductSelect(product)}
                 >
-                  <ProductHeader>
-                    <ProductTitle>{product.name}</ProductTitle>
+                  <ProductContent>
                     <SelectIcon selected={selectedProduct?.id === product.id}>
                       {selectedProduct?.id === product.id && <CheckOutlined />}
                     </SelectIcon>
-                  </ProductHeader>
-                  <ProductInfo>
-                    <ProductType>{product.type}</ProductType>
-                    <ProductAge>{product.ageRange}</ProductAge>
-                  </ProductInfo>
-                  <ProductCompany>
-                    <CompanyLogo logo={product.logo} />
-                    <CompanyName>{product.company}</CompanyName>
-                  </ProductCompany>
+                    <ProductDetails>
+                      <ProductTitle>{product.name}</ProductTitle>
+                      <ProductInfo>
+                        <ProductType>{product.type}</ProductType>
+                        <ProductAge>{product.ageRange}</ProductAge>
+                      </ProductInfo>
+                      <ProductCompany>
+                        <CompanyLogo logo={product.logo} />
+                        <CompanyName>{product.company}</CompanyName>
+                      </ProductCompany>
+                    </ProductDetails>
+                  </ProductContent>
                 </ProductItem>
               ))
             )}
@@ -295,7 +296,7 @@ const ContentArea = styled.div`
 `;
 
 const CategoryPanel = styled.div`
-  width: 150px;
+  width: 100px;
   background-color: white;
   border-right: 1px solid #f0f0f0;
 `;
@@ -367,7 +368,6 @@ const LoadingText = styled.div`
 `;
 
 const ProductItem = styled.div`
-  padding: 20px;
   margin-bottom: 10px;
   border-radius: 12px;
   border: 2px solid ${props => props.selected ? '#2468F2' : '#f0f0f0'};
@@ -378,6 +378,17 @@ const ProductItem = styled.div`
     border-color: #2468F2;
     box-shadow: 0 4px 12px rgba(36, 104, 242, 0.1);
   }
+`;
+
+const ProductContent = styled.div`
+  display: flex;
+  align-items: center;
+  padding: 20px;
+`;
+
+const ProductDetails = styled.div`
+  flex: 1;
+  margin-left: 15px;
 `;
 
 const ProductHeader = styled.div`
@@ -406,6 +417,7 @@ const SelectIcon = styled.div`
   align-items: center;
   justify-content: center;
   font-size: 12px;
+  flex-shrink: 0;
 `;
 
 const ProductInfo = styled.div`
@@ -458,8 +470,10 @@ const BottomButton = styled.div`
   right: 0;
   padding: 15px 20px;
   background-color: white;
-  box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.1);
   z-index: 100;
+  display: flex;
+  background-color: transparent;
+  justify-content: center;
   
   @media screen and (min-width: 768px) {
     max-width: 414px;
@@ -469,7 +483,8 @@ const BottomButton = styled.div`
 `;
 
 const NextButton = styled(Button)`
-  width: 100%;
+  width: auto;
+  min-width: 280px;
   height: 60px;
   border-radius: 30px;
   font-size: 16px;
@@ -478,6 +493,7 @@ const NextButton = styled(Button)`
   border: none;
   box-shadow: 0 4px 12px rgba(36, 104, 242, 0.3);
   line-height: 1.2;
+  padding: 0 30px;
   
   &:hover {
     background: linear-gradient(135deg, #1890ff 0%, #2468F2 100%);
