@@ -21,6 +21,9 @@ const Materials = () => {
           setInsuranceCompanies(data);
         }
       })
+      .catch(error => {
+        console.error('Failed to fetch company data:', error);
+      })
   }, [])
   // 保险公司数据
   // const insuranceCompanies = [
@@ -60,7 +63,7 @@ const Materials = () => {
             {insuranceCompanies.map(company => (
               <CompanyItem key={company.id}>
                 <CompanyLogo style={{ backgroundColor: company.color }}>
-                  {company.logo}
+                  <img src={company.logo} alt={company.name} style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
                 </CompanyLogo>
                 <CompanyName>{company.name}</CompanyName>
               </CompanyItem>
@@ -189,21 +192,20 @@ const CompanyItem = styled.div`
 `;
 
 const CompanyLogo = styled.div`
-  width: 50px;
-  height: 50px;
-  border-radius: 12px;
+  width: 36px;
+  height: 36px;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 20px;
   margin-bottom: 6px;
+  overflow: hidden;
 `;
 
 const CompanyName = styled.span`
-  font-size: 12px;
+  font-size: 14px;
   color: #333;
   text-align: center;
-  font-weight: 500;
+  font-weight: 600;
 `;
 
 const BottomNavigation = styled.div`
