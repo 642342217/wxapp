@@ -57,13 +57,14 @@ const CompanyDetail = () => {
     })
       .then(res => {
         if (res.code === 0) {
-          const newMaterials = res.data.list || [];
+          const newMaterials = res.data.records || [];
           if (isRefresh || pageNum === 1) {
             setMaterials(newMaterials);
           } else {
             setMaterials(prev => [...prev, ...newMaterials]);
           }
-          setHasMore(newMaterials.length === 10);
+          // 使用接口返回的分页信息判断是否还有更多数据
+          setHasMore(res.data.current < res.data.pages);
           setPage(pageNum);
         }
       })
@@ -162,13 +163,13 @@ const CompanyDetail = () => {
         {materials.map((material, index) => (
           <MaterialItem key={`${material.id}-${index}`}>
             <MaterialContent>
-              <MaterialTitle>{material.title}</MaterialTitle>
+              <MaterialTitle>{material.name}</MaterialTitle>
               <MaterialMeta>
-                <MaterialDate>{formatDate(material.createTime)} by {material.author || '小润'}</MaterialDate>
+                <MaterialDate>{formatDate(material.createTime)}</MaterialDate>
               </MaterialMeta>
             </MaterialContent>
             <MaterialIcon>
-              <LogoIcon />
+              <img src={material.icon} alt={material.name} />
             </MaterialIcon>
           </MaterialItem>
         ))}
@@ -315,35 +316,16 @@ const MaterialIcon = styled.div`
   align-items: center;
   justify-content: center;
   margin-left: 15px;
+  
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 4px;
+  }
 `;
 
-const LogoIcon = styled.div`
-  width: 20px;
-  height: 20px;
-  background: linear-gradient(45deg, #00C853, #4CAF50, #8BC34A);
-  border-radius: 2px;
-  position: relative;
-  
-  &::before,
-  &::after {
-    content: '';
-    position: absolute;
-    width: 20px;
-    height: 20px;
-    background: linear-gradient(45deg, #00C853, #4CAF50, #8BC34A);
-    border-radius: 2px;
-  }
-  
-  &::before {
-    left: -8px;
-    z-index: -1;
-  }
-  
-  &::after {
-    left: -16px;
-    z-index: -2;
-  }
-`;
+
 
 const LoadingText = styled.div`
   text-align: center;
