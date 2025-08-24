@@ -52,7 +52,7 @@ const CompanyDetail = () => {
     apiService.getCompanyMaterials({
       companyId: id,
       categoryId,
-      page: pageNum + "",
+      pageNum: pageNum + "",
       pageSize: "10"
     })
       .then(res => {
@@ -84,11 +84,11 @@ const CompanyDetail = () => {
   };
 
   // 加载更多
-  const handleLoadMore = () => {
-    // if (hasMore && !loading) {
-    //   fetchMaterials(activeCategory, page + 1);
-    // }
-  };
+  const handleLoadMore = useCallback(() => {
+    if (hasMore && !loading) {
+      fetchMaterials(activeCategory, page + 1);
+    }
+  }, [hasMore, loading, activeCategory, page, fetchMaterials]);
 
   // 监听滚动事件
   useEffect(() => {
