@@ -13,8 +13,12 @@ const Materials = () => {
   };
 
   // 添加点击处理函数
-  const handleCompanyClick = (companyId) => {
-    navigate(`/materials/company/${companyId}`);
+  const handleCompanyClick = (company) => {
+    const params = new URLSearchParams({
+      logo: company.logo || '',
+      name: company.name || ''
+    });
+    navigate(`/materials/company/${company.id}?${params.toString()}`);
   };
 
   useEffect(() => {
@@ -66,7 +70,7 @@ const Materials = () => {
           <SectionTitle>各保司资料</SectionTitle>
           <CompanyGrid>
             {insuranceCompanies.map(company => (
-              <CompanyItem key={company.id} onClick={() => handleCompanyClick(company.id)}>
+              <CompanyItem key={company.id} onClick={() => handleCompanyClick(company)}>
                 <CompanyLogo style={{ backgroundColor: company.color }}>
                   <img src={company.logo} alt={company.name} style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
                 </CompanyLogo>

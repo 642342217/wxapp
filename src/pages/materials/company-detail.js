@@ -1,13 +1,19 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import styled from 'styled-components';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import { ArrowLeftOutlined } from '@ant-design/icons';
 import { apiService } from '../../utils/api';
 
 const CompanyDetail = () => {
   const navigate = useNavigate();
   const { id } = useParams();
+  const [searchParams] = useSearchParams();
   const [companyInfo, setCompanyInfo] = useState({});
+  const [total, setTotal] = useState(0)
+  
+  // 从URL查询参数获取logo和name
+  const logoFromQuery = searchParams.get('logo');
+  const nameFromQuery = searchParams.get('name');
   const [categories, setCategories] = useState([]);
   const [activeCategory, setActiveCategory] = useState(0);
   const [materials, setMaterials] = useState([]);
@@ -58,6 +64,7 @@ const CompanyDetail = () => {
       .then(res => {
         if (res.code === 0) {
           const newMaterials = res.data.records || [];
+          setTotal(res.data.total || 0)
           if (isRefresh || pageNum === 1) {
             setMaterials(newMaterials);
           } else {
@@ -131,16 +138,13 @@ const CompanyDetail = () => {
     <Container>
       {/* 头部信息 */}
       <Header>
-        <BackButton onClick={handleBack}>
-          <ArrowLeftOutlined />
-        </BackButton>
         <CompanyInfo>
           <CompanyLogo>
-            <img src={companyInfo.logo || companyInfo.icon} alt={companyInfo.name} />
+            <img src={logoFromQuery || companyInfo.logo || companyInfo.icon} alt={nameFromQuery || companyInfo.name} />
           </CompanyLogo>
           <CompanyDetails>
-            <CompanyName>{companyInfo.name || companyInfo.shortName}</CompanyName>
-            <MaterialCount>相关资料 ({materials.length})</MaterialCount>
+            <CompanyName>{nameFromQuery || companyInfo.name || companyInfo.shortName}</CompanyName>
+            <MaterialCount>相关资料 ({total})</MaterialCount>
           </CompanyDetails>
         </CompanyInfo>
       </Header>
@@ -165,7 +169,7 @@ const CompanyDetail = () => {
             <MaterialContent>
               <MaterialTitle>{material.name}</MaterialTitle>
               <MaterialMeta>
-                <MaterialDate>{formatDate(material.createTime)} by {material.author || '小润'}</MaterialDate>
+                <MaterialDate>{formatDate(material.createTime)}</MaterialDate>
               </MaterialMeta>
             </MaterialContent>
             <MaterialIcon>
