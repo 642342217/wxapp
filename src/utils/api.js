@@ -128,6 +128,15 @@ export const apiService = {
   getCustomerDetail: (params) => post('/app/custom/info', params),
 
   getCompanyPage: (params) => post('/app/company/list', params),
+
+  // 获取保司详情
+  getCompanyDetail: (params) => post('/app/company/info', params),
+
+  // 获取保司资料分类
+  getCompanyCategories: (params) => post('/app/company/article/category/list', params),
+
+  // 获取保司资料列表
+  getCompanyMaterials: (params) => post('/app/company/article/page', params),
   
   // 登出
   logout: () => post('/auth/logout'),
