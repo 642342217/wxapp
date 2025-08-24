@@ -9,6 +9,7 @@ import LoginPage from './pages/login';
 import Dashboard from './pages/dashboard';
 import Profile from './pages/profile';
 import ProposalsPage from './pages/proposals';
+import ProductSelectionPage from './pages/proposals/product-selection';
 import PoliciesPage from './pages/policies';
 import PolicyDetailPage from './pages/policies/detail';
 import ClientsPage from './pages/clients';
@@ -41,6 +42,7 @@ function App() {
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/profile" element={<Profile />} />
             <Route path="/proposals" element={<ProposalsPage />} />
+            <Route path="/proposals/product-selection" element={<ProductSelectionPage />} />
             <Route path="/policies/:id" element={<PolicyDetailPage />} />
             <Route path="/policies" element={<PoliciesPage />} />
             <Route path="/my-clients" element={<ClientsPage />} />

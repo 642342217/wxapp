@@ -92,7 +92,7 @@ const ProposalsPage = () => {
   };
 
   const handleCreateNew = () => {
-    message.info('跳转到新建建议书页面');
+    navigate('/proposals/product-selection');
   };
 
   return (
