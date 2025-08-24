@@ -165,7 +165,7 @@ const CompanyDetail = () => {
             <MaterialContent>
               <MaterialTitle>{material.name}</MaterialTitle>
               <MaterialMeta>
-                <MaterialDate>{formatDate(material.createTime)}</MaterialDate>
+                <MaterialDate>{formatDate(material.createTime)} by {material.author || '小润'}</MaterialDate>
               </MaterialMeta>
             </MaterialContent>
             <MaterialIcon>
@@ -173,6 +173,15 @@ const CompanyDetail = () => {
             </MaterialIcon>
           </MaterialItem>
         ))}
+        
+        {/* 空状态提示 */}
+        {!loading && materials.length === 0 && (
+          <EmptyState>
+            <EmptyIcon>📄</EmptyIcon>
+            <EmptyText>暂无相关资料</EmptyText>
+            <EmptySubText>该分类下还没有资料内容</EmptySubText>
+          </EmptyState>
+        )}
         
         {loading && (
           <LoadingText>加载中...</LoadingText>
@@ -332,6 +341,33 @@ const LoadingText = styled.div`
   padding: 20px;
   color: #999;
   font-size: 14px;
+`;
+
+const EmptyState = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 20px;
+  text-align: center;
+`;
+
+const EmptyIcon = styled.div`
+  font-size: 48px;
+  margin-bottom: 16px;
+  opacity: 0.6;
+`;
+
+const EmptyText = styled.div`
+  font-size: 16px;
+  color: #666;
+  margin-bottom: 8px;
+  font-weight: 500;
+`;
+
+const EmptySubText = styled.div`
+  font-size: 14px;
+  color: #999;
 `;
 
 export default CompanyDetail;
