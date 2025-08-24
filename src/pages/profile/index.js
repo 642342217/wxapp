@@ -86,7 +86,7 @@ const Profile = () => {
       </ContentArea>
       
       <BottomNavigation>
-        <NavItem onClick={() => handleNavigation('/dashboard')}>
+        <NavItem onClick={() => handleNavigation('/materials')}>
           <UserOutlined />
           <NavText>资料</NavText>
         </NavItem>
@@ -99,7 +99,7 @@ const Profile = () => {
           </NavIconGroup>
           <NavText>工作台</NavText>
         </NavItem>
-        <NavItem $isActive={true}>
+        <NavItem>
           <LogoutOutlined style={{ color: '#2468F2' }} />
           <NavText style={{ color: '#2468F2' }}>我的</NavText>
         </NavItem>

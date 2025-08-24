@@ -126,6 +126,8 @@ export const apiService = {
   getCustomers: (params) => post('/app/custom/page', params),
 
   getCustomerDetail: (params) => post('/app/custom/info', params),
+
+  getCompanyPage: (params) => post('/app/company/list', params),
   
   // 登出
   logout: () => post('/auth/logout'),

@@ -13,6 +13,7 @@ import PoliciesPage from './pages/policies';
 import PolicyDetailPage from './pages/policies/detail';
 import ClientsPage from './pages/clients';
 import ClientDetailPage from './pages/clients/detail';
+import Materials from './pages/materials';
 import AccountsPage from './pages/accounts';
 import AddAccountPage from './pages/accounts/add';
 import AccountDetailPage from './pages/accounts/detail';
@@ -43,6 +44,7 @@ function App() {
             <Route path="/policies" element={<PoliciesPage />} />
             <Route path="/my-clients" element={<ClientsPage />} />
             <Route path="/clients/:id" element={<ClientDetailPage />} />
+            <Route path="/materials" element={<Materials />} />
             <Route path="/accounts" element={<AccountsPage />} />
             <Route path="/accounts/add" element={<AddAccountPage />} />
             <Route path="/accounts/:id" element={<AccountDetailPage />} />

@@ -179,7 +179,7 @@ const Dashboard = () => {
       </ContentArea>
       
       <BottomNavigation>
-        <NavItem>
+        <NavItem onClick={() => navigate('/materials')}>
           <UserOutlined />
           <NavText>资料</NavText>
         </NavItem>
@@ -597,6 +597,7 @@ const NavItem = styled.div`
   justify-content: center;
   color: ${props => props.$isActive ? '#2468F2' : '#999'};
   font-size: 20px;
+  cursor: pointer;
 `;
 
 const NavText = styled.div`
