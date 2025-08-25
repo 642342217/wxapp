@@ -7,7 +7,7 @@ import { apiService } from '../../utils/api'
 
 const ProductSelectionPage = () => {
   const navigate = useNavigate();
-  const [selectedCategory, setSelectedCategory] = useState(null);
+  const [selectedCategory, setSelectedCategory] = useState('hot');
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [categories, setCategories] = useState([]);
   const [products, setProducts] = useState([]);
@@ -36,7 +36,9 @@ const ProductSelectionPage = () => {
   }, []);
 
   useEffect(() => {
-    if (selectedCategory) {
+    if (selectedCategory === 'hot') {
+      loadHotProducts(1, true);
+    } else if (selectedCategory) {
       loadProducts(1, true);
     }
   }, [selectedCategory]);
@@ -60,7 +62,11 @@ const ProductSelectionPage = () => {
           icon: item.icon
         }));
         
-        setCategories(prev => reset ? newCategories : [...prev, ...newCategories]);
+        // 在前面添加热门产品分类
+        const hotCategory = { id: 'hot', name: '热门产品', shortName: '推荐' };
+        const allCategories = reset ? [hotCategory, ...newCategories] : [...newCategories];
+        
+        setCategories(prev => reset ? allCategories : [hotCategory, ...prev, ...newCategories]);
         setCategoryPage({
           current: res.data.current,
           size: res.data.size,
@@ -68,16 +74,50 @@ const ProductSelectionPage = () => {
           pages: res.data.pages,
           hasMore: res.data.current < res.data.pages
         });
-        
-        // 默认选择第一个分类
-        if (reset && newCategories.length > 0 && !selectedCategory) {
-          setSelectedCategory(newCategories[0].id);
-        }
       }
     } catch (error) {
       console.error('加载产品分类失败:', error);
     } finally {
       setLoading(false);
+    }
+  };
+
+  // 加载热门产品列表
+  const loadHotProducts = async (pageNum = 1, reset = false) => {
+    if (productLoading) return;
+    
+    setProductLoading(true);
+    try {
+      const res = await apiService.getSpuHotSkuPage({ 
+        pageNum: pageNum.toString(), 
+        pageSize: productPage.size.toString()
+      });
+      
+      if (res.code === 0) {
+        const newProducts = res.data.records.map(item => ({
+          id: item.id,
+          name: `${item.name}-${item.year}年`,
+          type: item.type === 1 ? '储蓄险' : '其他险种',
+          age: item.age,
+          year: item.year,
+          ageRange: item.age,
+          spuName: item.spuName,
+          spuIcon: item.spuIcon
+        }));
+        
+        setProducts(prev => reset ? newProducts : [...prev, ...newProducts]);
+        setProductPage({
+          current: res.data.current,
+          size: res.data.size,
+          total: res.data.total,
+          pages: res.data.pages,
+          hasMore: res.data.current < res.data.pages
+        });
+      }
+    } catch (error) {
+      console.error('加载热门产品失败:', error);
+    } finally {
+      setProductLoading(false);
     }
   };
 
@@ -90,7 +130,7 @@ const ProductSelectionPage = () => {
       const res = await apiService.getSpuSkuPage({ 
         pageNum: pageNum.toString(), 
         pageSize: productPage.size.toString(),
-        spuId: selectedCategory.toString()
+        spuId: Number(selectedCategory)
       });
       
       if (res.code === 0) {
@@ -100,7 +140,9 @@ const ProductSelectionPage = () => {
           type: item.type === 1 ? '储蓄险' : '其他险种',
           age: item.age,
           year: item.year,
-          ageRange: item.age
+          ageRange: item.age,
+          spuName: '',
+          spuIcon: ''
         }));
         
         setProducts(prev => reset ? newProducts : [...prev, ...newProducts]);
@@ -144,7 +186,11 @@ const ProductSelectionPage = () => {
   const handleProductScroll = (e) => {
     const { scrollTop, scrollHeight, clientHeight } = e.target;
     if (scrollHeight - scrollTop <= clientHeight + 50 && productPage.hasMore && !productLoading) {
-      loadProducts(productPage.current + 1, false);
+      if (selectedCategory === 'hot') {
+        loadHotProducts(productPage.current + 1, false);
+      } else {
+        loadProducts(productPage.current + 1, false);
+      }
     }
   };
 
@@ -227,6 +273,12 @@ const ProductSelectionPage = () => {
                           <ProductType>{product.type}</ProductType>
                           <ProductAge>{product.ageRange}</ProductAge>
                         </ProductInfo>
+                        {product.spuName && (
+                          <ProductCompany>
+                            <CompanyLogo src={product.spuIcon} />
+                            <CompanyName>{product.spuName}</CompanyName>
+                          </ProductCompany>
+                        )}
                       </ProductDetails>
                     </ProductContent>
                   </ProductItem>
@@ -242,9 +294,8 @@ const ProductSelectionPage = () => {
       {selectedProduct && (
         <BottomButton>
           <NextButton type="primary" onClick={handleNext}>
-            已选择 {selectedProduct.name}
-            <br />
-            下一步
+            <div>已选择 {selectedProduct.name}</div>
+            <div>下一步</div>
           </NextButton>
         </BottomButton>
       )}
@@ -395,7 +446,7 @@ const ProductList = styled.div`
   height: 100%;
   overflow-y: auto;
   overflow-x: hidden;
-  padding: 10px;
+  padding: 10px 10px 100px;
   
   /* 隐藏滚动条 */
   &::-webkit-scrollbar {
@@ -489,16 +540,19 @@ const CompanyLogo = styled.div`
   height: 24px;
   border-radius: 4px;
   margin-right: 8px;
-  background-color: ${props => props.logo === 'aia' ? '#e6f7ff' : '#f0f0f0'};
+  background-color: #f0f0f0;
   display: flex;
   align-items: center;
   justify-content: center;
+  background-image: url(${props => props.src});
+  background-size: cover;
+  background-position: center;
   
   &::after {
-    content: '${props => props.logo === 'aia' ? 'A' : 'C'}';
+    content: ${props => props.src ? '""' : '"C"'};
     font-size: 12px;
     font-weight: 600;
-    color: ${props => props.logo === 'aia' ? '#1890ff' : '#666'};
+    color: #666;
   }
 `;
 
@@ -512,7 +566,7 @@ const BottomButton = styled.div`
   bottom: 0;
   left: 0;
   right: 0;
-  padding: 15px 20px;
+  padding: 20px 20px 25px;
   background-color: white;
   z-index: 100;
   display: flex;
@@ -536,8 +590,12 @@ const NextButton = styled(Button)`
   background: linear-gradient(135deg, #2468F2 0%, #1890ff 100%);
   border: none;
   box-shadow: 0 4px 12px rgba(36, 104, 242, 0.3);
-  line-height: 1.2;
+  line-height: 1.3;
   padding: 0 30px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
   
   &:hover {
     background: linear-gradient(135deg, #1890ff 0%, #2468F2 100%);
