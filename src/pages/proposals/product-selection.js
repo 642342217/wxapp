@@ -271,14 +271,16 @@ const ProductSelectionPage = () => {
                         <ProductTitle>{product.name}</ProductTitle>
                         <ProductInfo>
                           <ProductType>{product.type}</ProductType>
-                          <ProductAge>{product.ageRange}</ProductAge>
+                          <ProductBottomRow>
+                            <ProductAge>{product.ageRange}</ProductAge>
+                            {product.spuName && (
+                              <ProductCompany>
+                                <CompanyLogo src={product.spuIcon} />
+                                <CompanyName>{product.spuName}</CompanyName>
+                              </ProductCompany>
+                            )}
+                          </ProductBottomRow>
                         </ProductInfo>
-                        {product.spuName && (
-                          <ProductCompany>
-                            <CompanyLogo src={product.spuIcon} />
-                            <CompanyName>{product.spuName}</CompanyName>
-                          </ProductCompany>
-                        )}
                       </ProductDetails>
                     </ProductContent>
                   </ProductItem>
@@ -478,7 +480,7 @@ const ProductItem = styled.div`
 const ProductContent = styled.div`
   display: flex;
   align-items: center;
-  padding: 20px;
+  padding: 12px 20px;
 `;
 
 const ProductDetails = styled.div`
@@ -519,6 +521,12 @@ const ProductInfo = styled.div`
   margin-bottom: 12px;
 `;
 
+const ProductBottomRow = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+`;
+
 const ProductType = styled.div`
   font-size: 14px;
   color: #666;
@@ -557,8 +565,9 @@ const CompanyLogo = styled.div`
 `;
 
 const CompanyName = styled.div`
-  font-size: 14px;
+  font-size: 15px;
   color: #333;
+  font-weight: 500;
 `;
 
 const BottomButton = styled.div`
