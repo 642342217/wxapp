@@ -1,16 +1,18 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button, Card, Typography, Space, Row, Col, Badge } from 'antd';
 import { UserOutlined, CalendarOutlined, FileTextOutlined, SwapOutlined, LogoutOutlined, LineChartOutlined, UnorderedListOutlined } from '@ant-design/icons';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import useUserStore from '../../store/userStore';
 import backImage from '../../assets/images/back.jpg'; // 路径根据你的文件结构调整
+import { apiService } from '../../utils/api'
 
 
 const { Title, Text } = Typography;
 
 const Dashboard = () => {
   const navigate = useNavigate();
+  const [proposal, setProposal] = useState([]);
   
   // 使用 zustand 全局状态
   const { userInfo, loading, fetchUserInfo } = useUserStore();
@@ -22,6 +24,14 @@ const Dashboard = () => {
       fetchUserInfo();
     }
   }, [userInfo.name]);
+
+  useEffect(() => {
+    apiService.getProposalsPage({ pageNum: '1', pageSize: '5' })
+      .then(res => {
+        console.log(res, 'chjres');
+      })
+  }, [])
+
 
   // 模拟建议书数据
   const proposalData = [

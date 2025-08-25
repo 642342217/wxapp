@@ -3,6 +3,7 @@ import { Button, message } from 'antd';
 import { ArrowLeftOutlined, CheckOutlined } from '@ant-design/icons';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
+import { apiService } from '../../utils/api'
 
 const ProductSelectionPage = () => {
   const navigate = useNavigate();
@@ -11,87 +12,140 @@ const ProductSelectionPage = () => {
   const [categories, setCategories] = useState([]);
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [productLoading, setProductLoading] = useState(false);
 
-  // 模拟产品目录数据
-  const mockCategories = [
-    { id: 1, name: '热门产品', region: '' },
-    { id: 2, name: '友邦保险', region: '香港' },
-    { id: 3, name: '周大福人寿', region: '香港' },
-    { id: 4, name: '保诚保险', region: '香港' },
-    { id: 5, name: '安盛保险', region: '香港' },
-    { id: 6, name: '宏利保险', region: '香港' },
-    { id: 7, name: '万通保险', region: '香港' },
-    { id: 8, name: '富卫人寿', region: '香港' },
-    { id: 9, name: '万通保险', region: '香港' },
-    { id: 10, name: '万通保险', region: '香港' },
-    { id: 11, name: '万通保险', region: '香港' },
-    { id: 12, name: '万通保险', region: '香港' },
-    { id: 13, name: '万通保险', region: '香港' },
-  ];
+  // 分页状态
+  const [categoryPage, setCategoryPage] = useState({
+    current: 1,
+    size: 10,
+    total: 0,
+    pages: 1,
+    hasMore: true
+  });
 
-  // 模拟产品数据
-  const mockProducts = {
-    1: [
-      {
-        id: 1,
-        name: '环宇盈活储蓄保险计划-1年',
-        type: '储蓄险',
-        ageRange: '0岁 - 80岁',
-        company: '友邦（香港）',
-        logo: 'aia'
-      },
-      {
-        id: 2,
-        name: '环宇盈活储蓄保险计划-5年',
-        type: '储蓄险',
-        ageRange: '0岁 - 75岁',
-        company: '友邦（香港）',
-        logo: 'aia'
-      }
-    ],
-    2: [
-      {
-        id: 3,
-        name: '环宇盈活储蓄保险计划-1年',
-        type: '储蓄险',
-        ageRange: '0岁 - 80岁',
-        company: '友邦（香港）',
-        logo: 'aia'
-      },
-      {
-        id: 4,
-        name: '环宇盈活储蓄保险计划-5年',
-        type: '储蓄险',
-        ageRange: '0岁 - 75岁',
-        company: '友邦（香港）',
-        logo: 'aia'
-      }
-    ]
-  };
+  const [productPage, setProductPage] = useState({
+    current: 1,
+    size: 10,
+    total: 0,
+    pages: 1,
+    hasMore: true
+  });
 
   useEffect(() => {
-    // 模拟从后端获取产品目录
-    setCategories(mockCategories);
-    // 默认选择第一个分类
-    if (mockCategories.length > 0) {
-      setSelectedCategory(mockCategories[0]);
-    }
+    loadCategories(1, true);
   }, []);
 
   useEffect(() => {
     if (selectedCategory) {
-      // 模拟从后端获取具体产品
-      setLoading(true);
-      setTimeout(() => {
-        setProducts(mockProducts[selectedCategory.id] || []);
-        setLoading(false);
-      }, 300);
+      loadProducts(1, true);
     }
   }, [selectedCategory]);
 
-  const handleCategorySelect = (category) => {
-    setSelectedCategory(category);
-    setSelectedProduct(null); // 重置选中的产品
+  // 加载产品分类
+  const loadCategories = async (pageNum = 1, reset = false) => {
+    if (loading) return;
+    
+    setLoading(true);
+    try {
+      const res = await apiService.getSpuPage({ 
+        pageNum: pageNum.toString(), 
+        pageSize: categoryPage.size.toString() 
+      });
+      
+      if (res.code === 0) {
+        const newCategories = res.data.records.map(item => ({
+          id: item.id,
+          name: item.name,
+          shortName: item.shortName,
+          icon: item.icon
+        }));
+        
+        setCategories(prev => reset ? newCategories : [...prev, ...newCategories]);
+        setCategoryPage({
+          current: res.data.current,
+          size: res.data.size,
+          total: res.data.total,
+          pages: res.data.pages,
+          hasMore: res.data.current < res.data.pages
+        });
+        
+        // 默认选择第一个分类
+        if (reset && newCategories.length > 0 && !selectedCategory) {
+          setSelectedCategory(newCategories[0].id);
+        }
+      }
+    } catch (error) {
+      console.error('加载产品分类失败:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // 加载产品列表
+  const loadProducts = async (pageNum = 1, reset = false) => {
+    if (productLoading || !selectedCategory) return;
+    
+    setProductLoading(true);
+    try {
+      const res = await apiService.getSpuSkuPage({ 
+        pageNum: pageNum.toString(), 
+        pageSize: productPage.size.toString(),
+        spuId: selectedCategory.toString()
+      });
+      
+      if (res.code === 0) {
+        const newProducts = res.data.records.map(item => ({
+          id: item.id,
+          name: `${item.name}-${item.year}年`,
+          type: item.type === 1 ? '储蓄险' : '其他险种',
+          age: item.age,
+          year: item.year,
+          ageRange: item.age
+        }));
+        
+        setProducts(prev => reset ? newProducts : [...prev, ...newProducts]);
+        setProductPage({
+          current: res.data.current,
+          size: res.data.size,
+          total: res.data.total,
+          pages: res.data.pages,
+          hasMore: res.data.current < res.data.pages
+        });
+      }
+    } catch (error) {
+      console.error('加载产品列表失败:', error);
+    } finally {
+      setProductLoading(false);
+    }
+  };
+
+  const handleCategorySelect = (categoryId) => {
+    setSelectedCategory(categoryId);
+    setSelectedProduct(null);
+    setProducts([]);
+    setProductPage({
+      current: 1,
+      size: 10,
+      total: 0,
+      pages: 1,
+      hasMore: true
+    });
+  };
+
+  // 分类列表滚动加载
+  const handleCategoryScroll = (e) => {
+    const { scrollTop, scrollHeight, clientHeight } = e.target;
+    if (scrollHeight - scrollTop <= clientHeight + 50 && categoryPage.hasMore && !loading) {
+      loadCategories(categoryPage.current + 1, false);
+    }
+  };
+
+  // 产品列表滚动加载
+  const handleProductScroll = (e) => {
+    const { scrollTop, scrollHeight, clientHeight } = e.target;
+    if (scrollHeight - scrollTop <= clientHeight + 50 && productPage.hasMore && !productLoading) {
+      loadProducts(productPage.current + 1, false);
+    }
   };
 
   const handleProductSelect = (product) => {
@@ -111,14 +165,6 @@ const ProductSelectionPage = () => {
 
   return (
     <Container>
-      {/* 顶部导航 */}
-      <Header>
-        <BackButton onClick={handleBack}>
-          <ArrowLeftOutlined />
-        </BackButton>
-        <Title>新建建议书</Title>
-      </Header>
-
       {/* 步骤指示器 */}
       <StepsContainer>
         <StepItem active>
@@ -143,52 +189,50 @@ const ProductSelectionPage = () => {
       <ContentArea>
         {/* 左侧产品目录 */}
         <CategoryPanel>
-          <CategoryList>
+          <CategoryList onScroll={handleCategoryScroll}>
             {categories.map((category) => (
               <CategoryItem
                 key={category.id}
-                selected={selectedCategory?.id === category.id}
-                onClick={() => handleCategorySelect(category)}
+                selected={selectedCategory === category.id}
+                onClick={() => handleCategorySelect(category.id)}
               >
                 <CategoryName>{category.name}</CategoryName>
-                {category.region && (
-                  <CategoryRegion>{category.region}</CategoryRegion>
-                )}
+                <CategoryRegion>{category.shortName}</CategoryRegion>
               </CategoryItem>
             ))}
+            {loading && <LoadingText>加载中...</LoadingText>}
           </CategoryList>
         </CategoryPanel>
 
         {/* 右侧产品列表 */}
         <ProductPanel>
-          <ProductList>
-            {loading ? (
+          <ProductList onScroll={handleProductScroll}>
+            {productLoading && products.length === 0 ? (
               <LoadingText>加载中...</LoadingText>
             ) : (
-              products.map((product) => (
-                <ProductItem
-                  key={product.id}
-                  selected={selectedProduct?.id === product.id}
-                  onClick={() => handleProductSelect(product)}
-                >
-                  <ProductContent>
-                    <SelectIcon selected={selectedProduct?.id === product.id}>
-                      {selectedProduct?.id === product.id && <CheckOutlined />}
-                    </SelectIcon>
-                    <ProductDetails>
-                      <ProductTitle>{product.name}</ProductTitle>
-                      <ProductInfo>
-                        <ProductType>{product.type}</ProductType>
-                        <ProductAge>{product.ageRange}</ProductAge>
-                      </ProductInfo>
-                      <ProductCompany>
-                        <CompanyLogo logo={product.logo} />
-                        <CompanyName>{product.company}</CompanyName>
-                      </ProductCompany>
-                    </ProductDetails>
-                  </ProductContent>
-                </ProductItem>
-              ))
+              <>
+                {products.map((product) => (
+                  <ProductItem
+                    key={product.id}
+                    selected={selectedProduct?.id === product.id}
+                    onClick={() => handleProductSelect(product)}
+                  >
+                    <ProductContent>
+                      <SelectIcon selected={selectedProduct?.id === product.id}>
+                        {selectedProduct?.id === product.id && <CheckOutlined />}
+                      </SelectIcon>
+                      <ProductDetails>
+                        <ProductTitle>{product.name}</ProductTitle>
+                        <ProductInfo>
+                          <ProductType>{product.type}</ProductType>
+                          <ProductAge>{product.ageRange}</ProductAge>
+                        </ProductInfo>
+                      </ProductDetails>
+                    </ProductContent>
+                  </ProductItem>
+                ))}
+                {productLoading && products.length > 0 && <LoadingText>加载更多...</LoadingText>}
+              </>
             )}
           </ProductList>
         </ProductPanel>

@@ -192,6 +192,13 @@ export const apiService = {
   logout: () => post('/auth/logout'),
 
 
+  getProposalsPage: (params) => post('/app/proposal/page', params),
+
+
+  getSpuPage: (params) => post('/app/spu/page', params),
+
+  getSpuSkuPage: (params) => post('/app/spu/sku/page', params),
+
 };
 
 export default apiService;
