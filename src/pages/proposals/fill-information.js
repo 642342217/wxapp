@@ -1,8 +1,10 @@
-import React, { useState } from 'react';
-import { Button, Input, Radio, Select, message } from 'antd';
-import { ArrowLeftOutlined, CheckOutlined } from '@ant-design/icons';
+import React, { useState, useEffect } from 'react';
+import { Button, Input, Radio, Select, message, DatePicker } from 'antd';
+import { CheckOutlined } from '@ant-design/icons';
 import styled from 'styled-components';
 import { useNavigate, useLocation } from 'react-router-dom';
+import { apiService } from '../../utils/api';
+import moment from 'moment';
 
 const { Option } = Select;
 
@@ -11,25 +13,158 @@ const FillInformationPage = () => {
   const location = useLocation();
   const selectedProduct = location.state?.selectedProduct;
 
-  const [formData, setFormData] = useState({
-    annualPremium: '',
-    beneficiaryName: 'Valued Client',
-    gender: '',
-    smoking: '',
-    residence: ''
-  });
+  const [formConfig, setFormConfig] = useState([]);
+  const [formData, setFormData] = useState({});
+  const [loading, setLoading] = useState(true);
 
-  const handleInputChange = (field, value) => {
+  // 获取表单配置
+  useEffect(() => {
+    const fetchFormConfig = async () => {
+      try {
+        setLoading(true);
+        // 这里需要传入实际的 SKU ID，暂时使用示例参数
+        const response = await apiService.getSkuConfig({ skuId: selectedProduct?.id || 1 });
+        
+        if (response.code === 0 && response.data?.respData) {
+          setFormConfig(response.data.respData);
+          
+          // 初始化表单数据
+          const initialData = {};
+          response.data.respData.forEach(section => {
+            section.fields.forEach(field => {
+              initialData[`${section.code}_${field.name}`] = field.value || '';
+            });
+          });
+          setFormData(initialData);
+        }
+      } catch (error) {
+        console.error('获取表单配置失败:', error);
+        message.error('获取表单配置失败');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchFormConfig();
+  }, [selectedProduct]);
+
+  const handleInputChange = (fieldKey, value) => {
     setFormData(prev => ({
       ...prev,
-      [field]: value
+      [fieldKey]: value
     }));
+  };
+
+  // 渲染不同类型的表单字段
+  const renderField = (field, sectionCode) => {
+    const fieldKey = `${sectionCode}_${field.name}`;
+    const fieldValue = formData[fieldKey];
+
+    if (!field.canEdit) {
+      return (
+        <InfoRow key={fieldKey}>
+          <InfoLabel>{field.label}</InfoLabel>
+          <InfoValue>{field.value}</InfoValue>
+        </InfoRow>
+      );
+    }
+
+    switch (field.type) {
+      case 'input':
+        return (
+          <FormRow key={fieldKey}>
+            <FormLabel required={field.required}>{field.label}</FormLabel>
+            <FormInput
+              placeholder={field.placeholder}
+              value={fieldValue}
+              onChange={(e) => handleInputChange(fieldKey, e.target.value)}
+            />
+          </FormRow>
+        );
+
+      case 'number':
+        return (
+          <FormRow key={fieldKey}>
+            <FormLabel required={field.required}>{field.label}</FormLabel>
+            <FormInput
+              type="number"
+              placeholder={field.placeholder}
+              value={fieldValue}
+              onChange={(e) => handleInputChange(fieldKey, e.target.value)}
+            />
+          </FormRow>
+        );
+
+      case 'select':
+        return (
+          <FormRow key={fieldKey}>
+            <FormLabel required={field.required}>{field.label}</FormLabel>
+            <Select
+              placeholder={field.placeholder}
+              style={{ width: '100%' }}
+              value={fieldValue}
+              onChange={(value) => handleInputChange(fieldKey, value)}
+            >
+              {field.options?.map(option => (
+                <Option key={option.value} value={option.value}>
+                  {option.name}
+                </Option>
+              ))}
+            </Select>
+          </FormRow>
+        );
+
+      case 'radio':
+        return (
+          <InfoRow key={fieldKey}>
+            <InfoLabel>{field.label}</InfoLabel>
+            <CurrencyContainer>
+              <Radio.Group 
+                value={fieldValue}
+                onChange={(e) => handleInputChange(fieldKey, e.target.value)}
+              >
+                {field.options?.map(option => (
+                  <Radio key={option} value={option}>{option}</Radio>
+                ))}
+              </Radio.Group>
+            </CurrencyContainer>
+          </InfoRow>
+        );
+
+      case 'date':
+        return (
+          <FormRow key={fieldKey}>
+            <FormLabel required={field.required}>{field.label}</FormLabel>
+            <DatePicker
+              style={{ width: '100%' }}
+              placeholder={field.placeholder}
+              value={fieldValue ? moment(fieldValue) : null}
+              onChange={(date) => handleInputChange(fieldKey, date ? date.format('YYYY-MM-DD') : '')}
+            />
+          </FormRow>
+        );
+
+      default:
+        return null;
+    }
   };
 
   const handleSubmit = () => {
     // 验证必填字段
-    if (!formData.annualPremium || !formData.gender || !formData.smoking || !formData.residence) {
-      message.error('请填写完整信息');
+    const requiredFields = [];
+    formConfig.forEach(section => {
+      section.fields.forEach(field => {
+        if (field.required && field.canEdit) {
+          const fieldKey = `${section.code}_${field.name}`;
+          if (!formData[fieldKey]) {
+            requiredFields.push(field.label);
+          }
+        }
+      });
+    });
+
+    if (requiredFields.length > 0) {
+      message.error(`请填写完整信息: ${requiredFields.join(', ')}`);
       return;
     }
     
@@ -43,9 +178,13 @@ const FillInformationPage = () => {
     });
   };
 
-  const handleBack = () => {
-    navigate('/proposals/product-selection');
-  };
+  if (loading) {
+    return (
+      <Container>
+        <div style={{ textAlign: 'center', padding: '50px' }}>加载中...</div>
+      </Container>
+    );
+  }
 
   return (
     <Container>
@@ -73,99 +212,12 @@ const FillInformationPage = () => {
 
       {/* 主要内容区域 */}
       <ContentArea>
-        {/* 产品信息 */}
-        <SectionCard>
-          <SectionTitle>产品信息</SectionTitle>
-          
-          <InfoRow>
-            <InfoLabel>保司</InfoLabel>
-            <InfoValue>友邦（香港）</InfoValue>
-          </InfoRow>
-          
-          <InfoRow>
-            <InfoLabel>产品名称</InfoLabel>
-            <InfoValue>环宇盈活储蓄保险计划-1年</InfoValue>
-          </InfoRow>
-          
-          <InfoRow>
-            <InfoLabel>年期</InfoLabel>
-            <InfoValue>1年</InfoValue>
-          </InfoRow>
-          
-          <InfoRow>
-            <InfoLabel>货币单位</InfoLabel>
-            <CurrencyContainer>
-              <Radio.Group defaultValue="USD">
-                <Radio value="USD">USD</Radio>
-                <Radio value="HKD">HKD</Radio>
-              </Radio.Group>
-            </CurrencyContainer>
-          </InfoRow>
-          
-          <InfoRow>
-            <InfoLabel>年缴保费/保额</InfoLabel>
-            <InfoValue>年缴保费 ></InfoValue>
-          </InfoRow>
-          
-          <FormRow>
-            <FormLabel required>年缴保费</FormLabel>
-            <FormInput
-              placeholder="请输入金额"
-              value={formData.annualPremium}
-              onChange={(e) => handleInputChange('annualPremium', e.target.value)}
-            />
-          </FormRow>
-        </SectionCard>
-
-        {/* 受保人信息 */}
-        <SectionCard>
-          <SectionTitle>受保人信息</SectionTitle>
-          
-          <InfoRow>
-            <InfoLabel>姓名</InfoLabel>
-            <InfoValue>Valued Client</InfoValue>
-          </InfoRow>
-          
-          <FormRow>
-            <FormLabel required>性别</FormLabel>
-            <Select
-              placeholder="请选择性别"
-              style={{ width: '100%' }}
-              value={formData.gender}
-              onChange={(value) => handleInputChange('gender', value)}
-            >
-              <Option value="male">男</Option>
-              <Option value="female">女</Option>
-            </Select>
-          </FormRow>
-          
-          <FormRow>
-            <FormLabel required>是否吸烟</FormLabel>
-            <Select
-              placeholder="请选择是否吸烟"
-              style={{ width: '100%' }}
-              value={formData.smoking}
-              onChange={(value) => handleInputChange('smoking', value)}
-            >
-              <Option value="no">否</Option>
-              <Option value="yes">是</Option>
-            </Select>
-          </FormRow>
-          
-          <FormRow>
-            <FormLabel required>居住地</FormLabel>
-            <Select
-              placeholder="请选择居住地"
-              style={{ width: '100%' }}
-              value={formData.residence}
-              onChange={(value) => handleInputChange('residence', value)}
-            >
-              <Option value="hongkong">香港</Option>
-              <Option value="mainland">中国大陆</Option>
-              <Option value="other">其他</Option>
-            </Select>
-          </FormRow>
-        </SectionCard>
+        {formConfig.map((section) => (
+          <SectionCard key={section.code}>
+            <SectionTitle>{section.title}</SectionTitle>
+            {section.fields.map(field => renderField(field, section.code))}
+          </SectionCard>
+        ))}
       </ContentArea>
 
       {/* 底部按钮 */}
