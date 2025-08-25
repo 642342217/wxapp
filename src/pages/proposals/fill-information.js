@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Button, Input, Radio, Selector, DatePicker, Toast } from 'antd-mobile';
-import { message } from 'antd';
+import { Button, Input, Radio, Picker, DatePicker, Toast } from 'antd-mobile';
 import { CheckOutlined } from '@ant-design/icons';
 import styled from 'styled-components';
 import { useNavigate, useLocation } from 'react-router-dom';
@@ -15,8 +14,8 @@ const FillInformationPage = () => {
   const [formConfig, setFormConfig] = useState([]);
   const [formData, setFormData] = useState({});
   const [loading, setLoading] = useState(true);
-  const [selectorVisible, setSelectorVisible] = useState(false);
   const [datePickerVisible, setDatePickerVisible] = useState(false);
+  const [pickerVisible, setPickerVisible] = useState(false);
   const [currentField, setCurrentField] = useState(null);
 
   // 获取表单配置
@@ -41,7 +40,7 @@ const FillInformationPage = () => {
         }
       } catch (error) {
         console.error('获取表单配置失败:', error);
-        message.error('获取表单配置失败');
+        Toast.show('获取表单配置失败');
       } finally {
         setLoading(false);
       }
@@ -57,14 +56,14 @@ const FillInformationPage = () => {
     }));
   };
 
-  const handleSelectorClick = (fieldKey, field) => {
-    setCurrentField({ fieldKey, field });
-    setSelectorVisible(true);
-  };
-
   const handleDateClick = (fieldKey, field) => {
     setCurrentField({ fieldKey, field });
     setDatePickerVisible(true);
+  };
+
+  const handlePickerClick = (fieldKey, field) => {
+    setCurrentField({ fieldKey, field });
+    setPickerVisible(true);
   };
 
   // 渲染不同类型的表单字段
@@ -109,7 +108,7 @@ const FillInformationPage = () => {
 
       case 'select':
         return (
-          <MobileFormRow key={fieldKey} onClick={() => handleSelectorClick(fieldKey, field)}>
+          <MobileFormRow key={fieldKey} onClick={() => handlePickerClick(fieldKey, field)}>
             <MobileLabel required={field.required}>{field.label}</MobileLabel>
             <MobileSelectValue>
               {fieldValue ? field.options?.find(opt => opt.value === fieldValue)?.name || fieldValue : field.placeholder}
@@ -214,8 +213,8 @@ const FillInformationPage = () => {
 
       {/* 主要内容区域 */}
       <ContentArea>
-        {formConfig.map((section) => (
-          <SectionCard key={section.code}>
+        {formConfig.map((section, index) => (
+          <SectionCard key={`${section.code}_${index}`}>
             <SectionTitle>{section.title}</SectionTitle>
             {section.fields.map(field => renderField(field, section.code))}
           </SectionCard>
@@ -232,28 +231,6 @@ const FillInformationPage = () => {
       {/* 制作提示 */}
       <TipText>您今日已经制作 1/12 份建议书</TipText>
 
-      {/* 选择器弹窗 */}
-      {selectorVisible && currentField && (
-        <Selector
-          visible={selectorVisible}
-          title={currentField.field.label}
-          options={currentField.field.options?.map(opt => ({
-            label: opt.name,
-            value: opt.value
-          })) || []}
-          value={[formData[currentField.fieldKey]]}
-          onConfirm={(values) => {
-            handleInputChange(currentField.fieldKey, values[0]);
-            setSelectorVisible(false);
-            setCurrentField(null);
-          }}
-          onCancel={() => {
-            setSelectorVisible(false);
-            setCurrentField(null);
-          }}
-        />
-      )}
-
       {/* 日期选择器弹窗 */}
       {datePickerVisible && currentField && (
         <DatePicker
@@ -267,6 +244,27 @@ const FillInformationPage = () => {
           }}
           onCancel={() => {
             setDatePickerVisible(false);
+            setCurrentField(null);
+          }}
+        />
+      )}
+
+      {/* 选择器弹窗 */}
+      {pickerVisible && currentField && (
+        <Picker
+          columns={[currentField.field.options?.map(opt => ({
+            label: opt.name,
+            value: opt.value
+          })) || []]}
+          visible={pickerVisible}
+          onClose={() => {
+            setPickerVisible(false);
+            setCurrentField(null);
+          }}
+          value={formData[currentField.fieldKey] ? [formData[currentField.fieldKey]] : []}
+          onConfirm={(values) => {
+            handleInputChange(currentField.fieldKey, values[0]);
+            setPickerVisible(false);
             setCurrentField(null);
           }}
         />
