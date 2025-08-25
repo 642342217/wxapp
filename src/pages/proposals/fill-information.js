@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { Button, Input, Radio, Select, message, DatePicker } from 'antd';
+import { Button, Input, Radio, Selector, DatePicker, Toast } from 'antd-mobile';
+import { message } from 'antd';
 import { CheckOutlined } from '@ant-design/icons';
 import styled from 'styled-components';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { apiService } from '../../utils/api';
-import moment from 'moment';
-
-const { Option } = Select;
+import dayjs from 'dayjs';
 
 const FillInformationPage = () => {
   const navigate = useNavigate();
@@ -16,6 +15,9 @@ const FillInformationPage = () => {
   const [formConfig, setFormConfig] = useState([]);
   const [formData, setFormData] = useState({});
   const [loading, setLoading] = useState(true);
+  const [selectorVisible, setSelectorVisible] = useState(false);
+  const [datePickerVisible, setDatePickerVisible] = useState(false);
+  const [currentField, setCurrentField] = useState(null);
 
   // 获取表单配置
   useEffect(() => {
@@ -55,6 +57,16 @@ const FillInformationPage = () => {
     }));
   };
 
+  const handleSelectorClick = (fieldKey, field) => {
+    setCurrentField({ fieldKey, field });
+    setSelectorVisible(true);
+  };
+
+  const handleDateClick = (fieldKey, field) => {
+    setCurrentField({ fieldKey, field });
+    setDatePickerVisible(true);
+  };
+
   // 渲染不同类型的表单字段
   const renderField = (field, sectionCode) => {
     const fieldKey = `${sectionCode}_${field.name}`;
@@ -72,46 +84,38 @@ const FillInformationPage = () => {
     switch (field.type) {
       case 'input':
         return (
-          <FormRow key={fieldKey}>
-            <FormLabel required={field.required}>{field.label}</FormLabel>
-            <FormInput
+          <MobileFormRow key={fieldKey}>
+            <MobileLabel required={field.required}>{field.label}</MobileLabel>
+            <MobileInput
               placeholder={field.placeholder}
               value={fieldValue}
-              onChange={(e) => handleInputChange(fieldKey, e.target.value)}
+              onChange={(value) => handleInputChange(fieldKey, value)}
             />
-          </FormRow>
+          </MobileFormRow>
         );
 
       case 'number':
         return (
-          <FormRow key={fieldKey}>
-            <FormLabel required={field.required}>{field.label}</FormLabel>
-            <FormInput
+          <MobileFormRow key={fieldKey}>
+            <MobileLabel required={field.required}>{field.label}</MobileLabel>
+            <MobileInput
               type="number"
               placeholder={field.placeholder}
               value={fieldValue}
-              onChange={(e) => handleInputChange(fieldKey, e.target.value)}
+              onChange={(value) => handleInputChange(fieldKey, value)}
             />
-          </FormRow>
+          </MobileFormRow>
         );
 
       case 'select':
         return (
-          <FormRow key={fieldKey}>
-            <FormLabel required={field.required}>{field.label}</FormLabel>
-            <Select
-              placeholder={field.placeholder}
-              style={{ width: '100%' }}
-              value={fieldValue}
-              onChange={(value) => handleInputChange(fieldKey, value)}
-            >
-              {field.options?.map(option => (
-                <Option key={option.value} value={option.value}>
-                  {option.name}
-                </Option>
-              ))}
-            </Select>
-          </FormRow>
+          <MobileFormRow key={fieldKey} onClick={() => handleSelectorClick(fieldKey, field)}>
+            <MobileLabel required={field.required}>{field.label}</MobileLabel>
+            <MobileSelectValue>
+              {fieldValue ? field.options?.find(opt => opt.value === fieldValue)?.name || fieldValue : field.placeholder}
+              <ArrowIcon />
+            </MobileSelectValue>
+          </MobileFormRow>
         );
 
       case 'radio':
@@ -121,7 +125,7 @@ const FillInformationPage = () => {
             <CurrencyContainer>
               <Radio.Group 
                 value={fieldValue}
-                onChange={(e) => handleInputChange(fieldKey, e.target.value)}
+                onChange={(value) => handleInputChange(fieldKey, value)}
               >
                 {field.options?.map(option => (
                   <Radio key={option} value={option}>{option}</Radio>
@@ -133,15 +137,13 @@ const FillInformationPage = () => {
 
       case 'date':
         return (
-          <FormRow key={fieldKey}>
-            <FormLabel required={field.required}>{field.label}</FormLabel>
-            <DatePicker
-              style={{ width: '100%' }}
-              placeholder={field.placeholder}
-              value={fieldValue ? moment(fieldValue) : null}
-              onChange={(date) => handleInputChange(fieldKey, date ? date.format('YYYY-MM-DD') : '')}
-            />
-          </FormRow>
+          <MobileFormRow key={fieldKey} onClick={() => handleDateClick(fieldKey, field)}>
+            <MobileLabel required={field.required}>{field.label}</MobileLabel>
+            <MobileSelectValue>
+              {fieldValue || field.placeholder}
+              <ArrowIcon />
+            </MobileSelectValue>
+          </MobileFormRow>
         );
 
       default:
@@ -164,11 +166,11 @@ const FillInformationPage = () => {
     });
 
     if (requiredFields.length > 0) {
-      message.error(`请填写完整信息: ${requiredFields.join(', ')}`);
+      Toast.show(`请填写完整信息: ${requiredFields.join(', ')}`);
       return;
     }
     
-    message.success('信息提交成功');
+    Toast.show('信息提交成功');
     // 跳转到制作页面
     navigate('/proposals/create', { 
       state: { 
@@ -229,6 +231,46 @@ const FillInformationPage = () => {
       
       {/* 制作提示 */}
       <TipText>您今日已经制作 1/12 份建议书</TipText>
+
+      {/* 选择器弹窗 */}
+      {selectorVisible && currentField && (
+        <Selector
+          visible={selectorVisible}
+          title={currentField.field.label}
+          options={currentField.field.options?.map(opt => ({
+            label: opt.name,
+            value: opt.value
+          })) || []}
+          value={[formData[currentField.fieldKey]]}
+          onConfirm={(values) => {
+            handleInputChange(currentField.fieldKey, values[0]);
+            setSelectorVisible(false);
+            setCurrentField(null);
+          }}
+          onCancel={() => {
+            setSelectorVisible(false);
+            setCurrentField(null);
+          }}
+        />
+      )}
+
+      {/* 日期选择器弹窗 */}
+      {datePickerVisible && currentField && (
+        <DatePicker
+          visible={datePickerVisible}
+          title={currentField.field.label}
+          value={formData[currentField.fieldKey] ? new Date(formData[currentField.fieldKey]) : new Date()}
+          onConfirm={(date) => {
+            handleInputChange(currentField.fieldKey, dayjs(date).format('YYYY-MM-DD'));
+            setDatePickerVisible(false);
+            setCurrentField(null);
+          }}
+          onCancel={() => {
+            setDatePickerVisible(false);
+            setCurrentField(null);
+          }}
+        />
+      )}
     </Container>
   );
 };
@@ -359,35 +401,7 @@ const CurrencyContainer = styled.div`
   }
 `;
 
-const FormRow = styled.div`
-  margin-bottom: 20px;
-`;
 
-const FormLabel = styled.div`
-  font-size: 16px;
-  color: #333;
-  margin-bottom: 8px;
-  
-  ${props => props.required && `
-    &::before {
-      content: '*';
-      color: #ff4d4f;
-      margin-right: 4px;
-    }
-  `}
-`;
-
-const FormInput = styled(Input)`
-  height: 44px;
-  border-radius: 8px;
-  border: 1px solid #d9d9d9;
-  font-size: 16px;
-  
-  &:focus {
-    border-color: #2468F2;
-    box-shadow: 0 0 0 2px rgba(36, 104, 242, 0.2);
-  }
-`;
 
 const BottomButton = styled.div`
   position: fixed;
@@ -420,6 +434,73 @@ const SubmitButton = styled(Button)`
     background: linear-gradient(135deg, #1890ff 0%, #2468F2 100%);
     transform: translateY(-2px);
     box-shadow: 0 6px 16px rgba(36, 104, 242, 0.4);
+  }
+`;
+
+const MobileFormRow = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 0;
+  border-bottom: 1px solid #f0f0f0;
+  cursor: pointer;
+  gap: 10px;
+  
+  &:last-child {
+    border-bottom: none;
+  }
+`;
+
+const MobileLabel = styled.div`
+  font-size: 16px;
+  color: #333;
+  flex-shrink: 0;
+  
+  ${props => props.required && `
+    &::before {
+      content: '*';
+      color: #ff4d4f;
+      margin-right: 4px;
+    }
+  `}
+`;
+
+const MobileInput = styled(Input)`
+  border: none;
+  background: transparent;
+  text-align: right;
+  padding: 0;
+  font-size: 16px;
+  flex: 1;
+  
+  &::placeholder {
+    color: #ccc;
+  }
+  
+  &[type="number"] {
+    text-align: right;
+  }
+`;
+
+const MobileSelectValue = styled.div`
+  display: flex;
+  align-items: center;
+  color: #333;
+  font-size: 16px;
+  
+  &:empty::before {
+    content: attr(data-placeholder);
+    color: #ccc;
+  }
+`;
+
+const ArrowIcon = styled.span`
+  margin-left: 8px;
+  color: #ccc;
+  font-size: 14px;
+  
+  &::after {
+    content: '>';
   }
 `;
 
