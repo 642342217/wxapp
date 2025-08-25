@@ -201,6 +201,10 @@ export const apiService = {
 
   getSpuHotSkuPage: (params) => post('/app/spu/sku/hot/page', params),
 
+  getSkuConfig: (params) => post('/app/spu/sku/info', params),
+
+  
+
 };
 
 export default apiService;

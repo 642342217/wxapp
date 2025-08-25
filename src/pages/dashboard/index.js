@@ -29,6 +29,10 @@ const Dashboard = () => {
     apiService.getProposalsPage({ pageNum: '1', pageSize: '5' })
       .then(res => {
         console.log(res, 'chjres');
+        if (res.code == 0) {
+          const { data: records } = res;
+          setProposal(records || []);
+        }
       })
   }, [])
 

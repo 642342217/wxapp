@@ -10,6 +10,7 @@ import Dashboard from './pages/dashboard';
 import Profile from './pages/profile';
 import ProposalsPage from './pages/proposals';
 import ProductSelectionPage from './pages/proposals/product-selection';
+import FillInformationPage from './pages/proposals/fill-information';
 import PoliciesPage from './pages/policies';
 import PolicyDetailPage from './pages/policies/detail';
 import ClientsPage from './pages/clients';
@@ -43,6 +44,7 @@ function App() {
             <Route path="/profile" element={<Profile />} />
             <Route path="/proposals" element={<ProposalsPage />} />
             <Route path="/proposals/product-selection" element={<ProductSelectionPage />} />
+            <Route path="/proposals/fill-information" element={<FillInformationPage />} />
             <Route path="/policies/:id" element={<PolicyDetailPage />} />
             <Route path="/policies" element={<PoliciesPage />} />
             <Route path="/my-clients" element={<ClientsPage />} />

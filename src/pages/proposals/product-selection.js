@@ -200,8 +200,12 @@ const ProductSelectionPage = () => {
 
   const handleNext = () => {
     if (selectedProduct) {
-      message.success(`已选择产品：${selectedProduct.name}`);
-      // 这里可以跳转到下一步页面
+      // 跳转到填写信息页面，传递选中的产品信息
+      navigate('/proposals/fill-information', { 
+        state: { 
+          selectedProduct 
+        } 
+      });
     }
   };
 
